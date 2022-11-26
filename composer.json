@@ -1,0 +1,7 @@
+{
+    "require": {
+        "wechatpay/wechatpay": "^1.4",
+        "tencentcloud/sms": "^3.0",
+        "wechatpay/wechatpay-guzzle-middleware": "^0.2.2"
+    }
+}

@@ -1,0 +1,50 @@
+{set:$paymentList=Api::run('getPaymentListByOnline')}
+<div id="pageInfo" data-title="在线充值" data-goback="{url:/ucenter/index}"></div>
+{if:$paymentList}
+<form action="{url:/block/doPay}" method="POST" class="form-inline form" role="form">
+<section class="login input_li">
+	<ul>
+        {foreach:items=Api::run('getPromotionByOnline')}
+        <li>{$item['name']}:{$item['intro']}</li>
+        {/foreach}
+
+		<li>
+			<input type="text" name="recharge" class="input_text" placeholder="请输入充值金额" pattern='float' initmsg="" alt="请输入金额">
+		</li>
+
+		<li>
+			{foreach:items = $paymentList}
+			<label class="input_radio block">
+				<input type="radio" {if:$key==0}checked{/if} name="payment_id" value="{$item['id']}">
+				<span>{$item['name']} {$item['note']}</span>
+			</label>
+			{/foreach}
+		</li>
+	</ul>
+</section>
+<input id="goSubmit" type="submit" class="none">
+<footer id="viewport_bottom">
+	<div class="btn_bottom">
+		<div class="btn_tab">
+			<label class="btn_tab_submit blue" for="goSubmit">确认充值</label>
+		</div>
+	</div>
+</footer>
+</form>
+{else:}
+<section class="nothing">
+	<i class="fa fa-tags"></i>
+	<p>当前没有可用的在线充值方式</p>
+	<div class="tips">
+		<a href="{url:/ucenter/index}">个人中心</a>
+		<a href="{url:/site/index}">网站首页</a>
+	</div>
+</section>
+{/if}
+
+<script>
+$(function(){
+	// 隐藏底部导航
+	$(".footer_nav").hide();
+});
+</script>

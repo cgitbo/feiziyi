@@ -1,0 +1,37 @@
+{set:$commentList = $this->commentQuery->find();}
+<div id="pageInfo" data-title="评论详情" data-goback="{url:/ucenter/index}"></div>
+{if:$commentList}
+<section class="comments_list">
+	<ul>
+		{foreach:items=$commentList key=$key item=$item}
+		<li>
+			<strong>{$item['username']}说：</strong><span>{$item['contents']}</span><br>
+			<strong>评价星级：</strong><em class="star star_{$item['point']}"></em>
+			{if:$item['img_list']}
+			<p>
+                {foreach:items=JSON::decode($item['img_list']) item=$itemImg}
+                <a href="{url:$itemImg}" target="_blank"><img class="img-thumbnail" style="width:125px;height:125px;border:1px solid #ccc;" src="{url:$itemImg}" /></a>
+                {/foreach}
+            </p>
+			{/if}
+		</li>
+		{/foreach}
+	</ul>
+</section>
+{$this->commentQuery->getPageBar()}
+{else:}
+<section class="nothing">
+	<i class="fa fa-comments-alt"></i>
+	<p>当前没有评价信息~</p>
+	<div class="tips">
+		<a href="{url:/ucenter/index}">个人中心</a>
+		<a href="{url:/site/index}">网站首页</a>
+	</div>
+</section>
+{/if}
+<script>
+$(function(){
+	// 隐藏底部导航
+	$(".footer_nav").hide();
+})
+</script>

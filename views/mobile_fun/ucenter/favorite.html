@@ -1,0 +1,35 @@
+<div id="pageInfo" data-title="我的收藏" data-goback="{url:/ucenter/index}"></div>
+<section class="goods_list">
+	<ul>
+        {set:$favoriteObj = Api::run('getFavorite',IReq::get('cat_id'));}
+		{foreach:items=$favoriteObj->find()}
+		<li>
+			<a href="{url:/site/products/id/$item['goods_id']}">
+				<i class="photo"><img class="goods_photo" src="{url:$item['img']}" alt="{$item['name']}"></i>
+				<h3 class="name"><strong>{$item['name']}</strong></h3>
+			</a>
+			<del class="del" onclick="delModel({link:'{url:/ucenter/favorite_del/id/$item['id']}',msg:'是否取消收藏？'});">
+				取消收藏
+			</del>
+		</li>
+		{/foreach}
+	</ul>
+</section>
+
+{if:!$items}
+<section class="nothing">
+	<i class="fa fa-heart"></i>
+	<p>您还没有收藏任何宝贝呢!</p>
+	<div class="tips">
+		<a href="{url:/ucenter/index}">个人中心</a>
+		<a href="{url:/site/index}">网站首页</a>
+	</div>
+</section>
+{/if}
+
+<script>
+$(function(){
+	// 隐藏底部导航
+	$(".footer_nav").hide();
+})
+</script>

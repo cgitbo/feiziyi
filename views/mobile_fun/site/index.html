@@ -1,0 +1,217 @@
+<script src="{theme:javascript/jquery.slider.js}"></script>
+<!--幻灯片 开始-->
+<div class="home_banner">
+	{if:$this->index_slide}
+	<ul>
+		{foreach:items=$this->index_slide}
+		<li><a href="{$item['url']}" target="_blank"><img src="{url:/pic/thumb/img/$item[img]}" alt="{$item['name']}"></a></li>
+		{/foreach}
+	</ul>
+	{/if}
+</div>
+<!--幻灯片 结束-->
+
+<!-- 导航开始 根据需要自定义 这里的图标都只是示例! 有 class="home_nav_2" 是可以自设文字图标样式-->
+
+<nav class="home_nav_2">
+	<ul>
+		<li><a href="{url:/site/seller}"><span>商家</span></a></li>
+		<li><a href="{url:/site/groupon}"><span>团购</span></a></li>
+		<li><a href="{url:/site/article}"><span>资讯</span></a></li>
+		<li><a href="{url:/ucenter/favorite}"><span>收藏</span></a></li>
+	</ul>
+</nav>
+
+<!-- 导航结束 -->
+
+<!-- 广告开始 -->
+
+<div class="home_show">
+	{echo:Ad::show("首页通栏100%*120(mobile_fun)")}
+</div>
+
+<!-- 广告结束 -->
+
+<!-- 团购活动 -->
+<h3 class="home_h3 more">
+	<a href="{url:/site/groupon}">团购商品</a>
+</h3>
+<section class="shop_home_tuan">
+	<ul>
+		{foreach:items=Api::run('getRegimentList',4)}
+		<li>
+			<a href="{url:/site/groupon/id/$item['id']}">
+				<i class="photo"><img class="goods_photo" alt="{$item['title']}" data-src="{url:/pic/thumb/img/$item[img]/w/200/h/200}"></i>
+				<h3 class="name"><strong>{$item['title']}</strong></h3>
+				<del class="old_price">￥{$item['sell_price']}</del>
+				<em class="price">￥{$item['regiment_price']}</em>
+			</a>
+		</li>
+		{/foreach}
+	</ul>
+</section>
+
+<!-- 抢购活动 -->
+<h3 class="home_h3">限时抢购</h3>
+<section class="shop_home_qiang">
+	<ul>
+		{foreach:items=Api::run('getPromotionList',4)}
+		{set:$free_time = ITime::getDiffSec($item['end_time'])}
+		{set:$countNumsItem[] = $item['p_id'];}
+		<li>
+			<a href="{url:/site/products/id/$item['goods_id']}">
+				<div class="countdown">
+					<i class="fa fa-time"></i>
+					<b id='cd_hour_{$item['p_id']}'>{echo:floor($free_time/3600);}</b>时
+					<b id='cd_minute_{$item['p_id']}'>{echo:floor(($free_time%3600)/60);}</b>分
+					<b id='cd_second_{$item['p_id']}'>{echo:$free_time%60;}</b>秒
+				</div>
+				<i class="photo"><img data-src="{url:/pic/thumb/img/$item[img]/w/175/h/175}" alt="{$item['name']}" title="{$item['name']}"></i>
+				<h3 class="name"><strong>{$item['name']}</strong></h3>
+				<em class="price">￥{$item['award_value']}</em>
+			</a>
+		</li>
+		{/foreach}
+	</ul>
+</section>
+<!-- 拼团活动 -->
+<h3 class="home_h3">拼团商品</h3>
+<section class="shop_home_tuan">
+	<ul>
+		{foreach:items=Api::run('getAssembleList',4)}
+		<li>
+			<a href="{url:/site/assemble/id/$item['id']}">
+				<i class="photo"><img data-src="{url:$item['img']}" alt="{$item['name']}" title="{$item['title']}"></i>
+				<h3 class="name"><strong>{$item['title']}</strong></h3>
+				<em class="price">￥{$item['assemble_price']}</em>
+			</a>
+		</li>
+		{/foreach}
+	</ul>
+</section>
+<!-- 首页布局方式一 调用六个商品 这个格式是特殊的,所以dom结构和下面的不一致 -->
+
+<section class="shop_home_list">
+	<ul>
+		{foreach:items = Api::run('getCommendHot',6)}
+		<li>
+			<a href="{url:/site/products/id/$item['id']}">
+				{if:$key==0}<i class="goods_words">热售</i>{/if}
+				<h3 class="goods_name">{$item['name']}</h3>
+				<p class="goods_market">{$item['market_price']}</p>
+				<em class="goods_price">{$item['sell_price']}</em>
+				<img data-src="{url:/pic/thumb/img/$item[img]/w/100/h/100}" alt="{$item['name']}" class="goods_photo">
+			</a>
+		</li>
+		{/foreach}
+	</ul>
+</section>
+
+<h3 class="home_h3">最新商品</h3>
+<!-- 首页布局方式二 调用八个商品 从这个布局开始,下面的DOM结构都是统一的 -->
+<section class="shop_home_list_2">
+	<ul>
+		{foreach:items = Api::run('getCommendNew',8)}
+		<li>
+			<a href="{url:/site/products/id/$item['id']}">
+				<i class="photo"><img class="goods_photo" data-src="{url:/pic/thumb/img/$item[img]/w/200/h/200}" alt="{$item['name']}"></i>
+				<h3 class="name"><strong>{$item['name']}</strong></h3>
+				<del class="old_price">￥{$item['market_price']}</del>
+				<em class="price">{$item['sell_price']}</em>
+			</a>
+		</li>
+		{/foreach}
+	</ul>
+</section>
+
+<!-- 间隔标题 -->
+<h3 class="home_h3">特价商品</h3>
+<!-- 首页布局三 调用2的倍数的商品 2 4 6 8 DOM结构与上面一致 -->
+
+<section class="shop_home_list_3">
+	<ul>
+		{foreach:items = Api::run('getCommendPrice',6)}
+		<li>
+			<a href="{url:/site/products/id/$item['id']}">
+				<i class="photo"><img class="goods_photo" data-src="{url:/pic/thumb/img/$item[img]/w/200/h/200}" alt="{$item['name']}"></i>
+				<h3 class="name"><strong>{$item['name']}</strong></h3>
+				<del class="old_price">￥{$item['market_price']}</del>
+				<em class="price">￥{$item['sell_price']}</em>
+			</a>
+		</li>
+		{/foreach}
+	</ul>
+</section>
+
+<!-- 间隔标题 -->
+<h3 class="home_h3">推荐商品</h3>
+<!-- 首页布局四 调用7个商品 DOM结构与上面一致 -->
+
+<section class="shop_home_list_3">
+	<ul>
+		{foreach:items = Api::run('getCommendRecom',8)}
+		<li>
+			<a href="{url:/site/products/id/$item['id']}">
+				<i class="photo"><img class="goods_photo" data-src="{url:/pic/thumb/img/$item[img]/w/200/h/200}" alt="{$item['name']}"></i>
+				<h3 class="name"><strong>{$item['name']}</strong></h3>
+				<del class="old_price">￥{$item['market_price']}</del>
+				<em class="price">￥{$item['sell_price']}</em>
+			</a>
+		</li>
+		{/foreach}
+	</ul>
+</section>
+
+<!-- 间隔标题 -->
+{if:$pointData = Api::run('getCostPointList',4)}
+<h3 class="home_h3 more">
+	<a href="{url:/site/costpoint}">积分兑换</a>
+</h3>
+
+<section class="shop_home_list_3">
+	<ul>
+		{foreach:items=$pointData}
+		<li>
+			<a href="{url:/site/products/id/$item['goods_id']}">
+				<i class="photo"><img class="goods_photo" data-src="{url:/pic/thumb/img/$item[img]/w/200/h/200}" alt="{$item['name']}"></i>
+				<h3 class="name"><strong>{$item['name']}</strong></h3>
+				<del class="old_price">￥{$item['sell_price']}</del>
+				<em class="price">{$item['point']}分</em>
+			</a>
+		</li>
+		{/foreach}
+	</ul>
+</section>
+{/if}
+
+<!-- 间隔标题 -->
+<h3 class="home_h3 more">
+	<a href="{url:/site/article}">最新资讯</a>
+</h3>
+<section class="home_news_list">
+	<ul>
+		{foreach:items=Api::run('getArtList',5)}
+		<li>
+			<time>{echo:date('m/d',strtotime($item['create_time']))}</time>
+			<a href="{url:/site/article_detail/id/$item['id']}">{echo:Article::showTitle($item['title'],$item['color'],$item['style'])}</a>
+		</li>
+		{/foreach}
+	</ul>
+</section>
+
+
+<script>
+$(function(){
+	// 设置焦点图
+	$(".home_banner").MobileSlider({width:720,height:360});
+	// 给底部导航加上当前样式
+	$(".nav_home").addClass('on');
+	//显示抢购倒计时
+	var cd_timer = new countdown();
+	{if:isset($countNumsItem) && $countNumsItem}
+	{foreach:items = $countNumsItem}
+		cd_timer.add({$item});
+	{/foreach}
+	{/if}
+})
+</script>

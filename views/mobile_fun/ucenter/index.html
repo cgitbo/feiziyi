@@ -1,0 +1,68 @@
+<div id="pageInfo" data-title="个人中心" data-goback="{url:/}"></div>
+
+<section class="user_info">
+	<div class="user_info_ico">
+		<a href="javascript:$('#userIcoFile').trigger('click');">
+			<img id="user_ico_img" src="{url:/pic/thumb/img/$this->user['head_ico']/w/100/h/100}" onerror="this.src='{skin:image/user_ico.jpg}'" />
+			<strong>{$this->user['username']}</strong>
+			<em>{$user['mobile']}</em>
+		</a>
+	</div>
+	<div class="user_info_int">
+		<dl>
+			<dt>帐户预付款</dt>
+			<dd>￥{$user['balance']}</dd>
+		</dl>
+		<dl>
+			<dt>我的会员组</dt>
+			<dd>{$user['group_name']}</dd>
+		</dl>
+		<dl>
+			<dt>我的积分</dt>
+			<dd>{$user['point']}</dd>
+		</dl>
+	</div>
+</section>
+<nav class="user_nav">
+	<ul>
+		{foreach:items=menuUcenter::init()}
+		{foreach:items=$item key=$moreKey item=$moreValue}
+		<li><a href="{url:$moreKey}"><i class="{echo:isset(menuUcenter::$ico[$moreValue])?menuUcenter::$ico[$moreValue]:'fa fa-question'}"></i><strong>{$moreValue}</strong></a></li>
+		{/foreach}
+		{/foreach}
+	</ul>
+</nav>
+{js:fileUpload}
+<input id="userIcoFile" style="display:none;" type="file" accept="image/*" name="userIcoFile" data-url="{url:/ucenter/user_ico_upload}" />
+
+<script>
+$(function(){
+	// 给底部导航加上当前样式
+	$(".nav_user").addClass('on');
+	// 给导航上色
+	var navLi = $(".user_nav li");
+	navLi.each(function(){
+		var t = $(this);
+		var $icon = t.find('i');
+		var $a = t.find('a'),
+			href= $a.attr('href');
+		$icon.css('color', getRandomColor());
+		if (href.indexOf("order")!=-1) {
+			t.addClass('big');
+		};
+		console.log(href.indexOf("order"))
+	});
+})
+function getRandomColor(){
+	var color = ["#F75A61","#F1407B","#32B2EC","#35BB98","#FFB359","#F88D91","#1FABEB"];
+	return color[~~(Math.random()*7)];
+}
+
+//jquery图片上传
+$('#userIcoFile').fileupload({
+    dataType: 'json',
+    done: function (e, data)
+    {
+        data.result && data.result.flag == 1 ? $('#user_ico_img').attr('src',data.result.img) : alert(data.result.error);
+    }
+});</script>

@@ -1,0 +1,279 @@
+{js:artTemplate}
+<script type="text/javascript" src="{webroot:public/javascript/products.js}"></script>
+<div id="pageInfo" data-title="商品详情"></div>
+<script src="{theme:javascript/jquery.slider.js}"></script>
+
+<section>
+    <!--货品ID，当为商品时值为空-->
+    <input type='hidden' id='product_id' alt='货品ID' value='' />
+    <!--商品相册 开始-->
+    <section class="goods_foucs">
+        <ul>
+            {foreach:items=$photo}
+            <li class="swiper-slide"><img src="{url:/pic/thumb/img/$item['img']/w/450/h/450}" alt="商品图片"></li>
+            {/foreach}
+        </ul>
+    </section>
+    <section class="good_info">
+		<header class="good_info_title">
+			<h1>{$name}</h1>
+			<p>编号：<span id="data_goodsNo">{echo:$goods_no?$goods_no:$id}</span>{if:isset($brand)}品牌：{$brand}{/if}</p>
+
+			<!--活动页面-->
+			{if:isset($activeTemplate)}
+			{include:$activeTemplate}
+			{/if}
+
+			<!-- 价格 -->
+			{if:$promo == ''}
+				{if:$group_price}
+				<!--当前用户有会员价-->
+				<em class="price">￥<span id="data_groupPrice">{$group_price}</span></em>
+				{else:}
+				<!--当前用户普通价格-->
+				<em class="price">￥<span id="data_sellPrice">{$sell_price}</span></em>
+				{/if}
+				<!-- 市场价格 -->
+				<del class="delprice">￥<span id="data_marketPrice">{$market_price}</span></del>
+			{/if}
+		</header>
+		<!-- 库存和广告语 -->
+		<section class="goods_tip">
+			{set:$goodsTicketList = Api::run('getFreeTicketList','',$id)}
+			{if:$this->user && $goodsTicketList}
+			<div class="ticket-container">
+				{foreach:items=$goodsTicketList item=$ticketItem}
+				<span class="ticket-item">满减券￥{echo:str_replace(".00","",$ticketItem['value'])}</span>
+				{if:$key>=2}{set:break;}{/if}
+				{/foreach}
+				<span class="ticket-button" onclick="showTicket();">领券 ></span>
+			</div>
+			{/if}
+			<p><em class="fr">库存:<span id="data_storeNums">{$store_nums}</span>件</em>预计3-7个工作日送达</p>
+			<p><em class='fr'>销量:{$sale}{$unit}</em><em class="star star_{echo:Common::gradeWidth($grade,$comments)}"></em>(已有{$comments}人评价)</p>
+		</section>
+
+		<!--商家信息 开始-->
+		{if:isset($seller)}
+		{set:plugin::trigger("onServiceButton",$seller['id'])}
+		<section class="goods_seller">
+			<p>商家：<a href="{url:/site/home/id/$seller_id}" class="blue">{$seller['true_name']}</a></p>
+			<p>联系电话：<a href="tel:{$seller['phone']}" class="pink">{$seller['phone']}</a></p>
+			<p>所在地：{echo:join(' ',area::name($seller['province'],$seller['city'],$seller['area']))}</p>
+		</section>
+		{/if}
+		<!--商家信息 结束-->
+		<section class="good_type">
+
+			{if:$spec_array}
+			<!--商品规格选择 开始-->
+			{foreach:items=JSON::decode($spec_array)}
+			<dl>
+				<dt>{$item['name']}：</dt>
+				<dd class="item">
+					{foreach:items=$item['value'] item=$spec_value key=$specValueKey}
+					{set:list($item['value'],$item['image'])=[key($spec_value),current($spec_value)]}
+					{if:$item['image']}
+
+					<!-- 图片 -->
+					<span specId="{$item['id']}" id="{$item['id']}{$specValueKey}" title="{echo:htmlspecialchars($item['value'])}" style="background:url({url:$item['image']}) center no-repeat;background-size:contain;width:55px;height:55px;"></span>
+
+					{else:}
+
+					<!-- 文字 -->
+					<span specId="{$item['id']}" id="{$item['id']}{$specValueKey}" title="{echo:htmlspecialchars($item['value'])}">{$item['value']}</span>
+
+					{/if}
+					<script>$('#{$item['id']}{$specValueKey}').data('specData',{echo:JSON::encode($item)});</script>
+					{/foreach}
+				</dd>
+			</dl>
+			{/foreach}
+			<!--商品规格选择 结束-->
+			{/if}
+			<!-- 循环商品属性结束 -->
+			<!-- 商品的数量调整 -->
+			<dl>
+				<dt>数量</dt>
+				<dd>
+					<div class="quantity">
+						<em class="sub" id="buyReduceButton">-</em>
+						<input class="num" id="buyNums" type="number" value="1">
+						<em class="add" id="buyAddButton">+</em>
+					</div>
+				</dd>
+			</dl>
+		</section>
+		<section class="pro_tab">
+			<ul>
+				<li class="on">商品详情</li>
+				<li>商品评论</li>
+				<li>商品咨询</li>
+			</ul>
+		</section>
+		<section class="pro_con">
+			<div class="con">
+				{if:isset($content) && $content}
+					<article class="article_detail">{$content}</article>
+				{/if}
+			</div>
+			<div class="con none">
+				<div id='commentBox'></div>
+				<script type='text/html' id='commentRowTemplate'>
+				<div class="commet">
+					<div class="user">
+						<img src="<%=webroot(head_ico)%>" onerror="this.src='{skin:image/user_ico.jpg}'" />
+					</div>
+					<dl class="desc">
+						<%=contents%>
+
+            			<%if(img_list){%>
+            			<%var img_list = JSON().parse(img_list);%>
+            			<p>
+            			<% for(var i in img_list){%>
+            			    <a href="<%=webroot(img_list[i])%>" target="_blank"><img class="img-thumbnail" style="width:52px;height:52px;border:1px solid #ccc;margin-bottom:4px;" src="<%=webroot(img_list[i])%>" /></a>
+                        <% } %>
+            			</p>
+            			<%}%>
+					</dl>
+				</div>
+				<%if(recontents){%>
+					<div class="recommet">
+						<div class="user"><img src="{skin:image/admin_ico.png}"></div>
+						<div class="desc"><%=recontents%></div>
+					</div>
+				<%}%>
+				</script>
+			</div>
+			<div class="con none">
+				<a class="question_btn" href="{url:/site/consult/id/$id}">我要咨询</a>
+				<div id='referBox'></div>
+				<!--购买咨询JS模板-->
+				<script type='text/html' id='referRowTemplate'>
+				<div class="commet">
+					<div class="user">
+						<img src="<%=webroot(head_ico)%>" onerror="this.src='{skin:image/user_ico.jpg}'" />
+					</div>
+					<dl class="desc">
+						<%=question%>
+					</dl>
+				</div>
+				<%if(answer){%>
+					<div class="recommet">
+						<div class="user"><img src="{skin:image/admin_ico.png}"></div>
+						<div class="desc"><%=answer%></div>
+					</div>
+				<%}%>
+
+				</script>
+			</div>
+		</section>
+	</section>
+	<footer id="viewport_bottom">
+		{if:$this->user}
+		<a href="{url:/simple/cart}" class="go_cart"><i class="fa fa-shopping-cart"></i></a>
+		{/if}
+		<div class="btn_bottom_goods">
+			<ul class="btn_ico">
+				<li>
+					<a href="{url:/}">
+						<i class="fa fa-home"></i>
+						<span>首页</span>
+					</a>
+				</li>
+				<li>
+					<a href="{url:/simple/cart}">
+						<i class="fa fa-shopping-cart"></i>
+						<span>购物车</span>
+					</a>
+				</li>
+				{if:$this->user}
+				<li onclick="favorite_add_ajax({$id},this);">
+					<i class="fa fa-star"></i>
+					<span>收藏</span>
+				</li>
+				{/if}
+			</ul>
+			<div class="btn_tab">
+				{if:$store_nums <= 0}
+				<a href="{url:/simple/arrival/goods_id/$id}" class="btn_tab_submit blue">商品已售完，到货通知</a>
+				{else:}
+				<span id="buyNowButton" class="btn_tab_submit pink">立即购买</span>
+				<span id="joinCarButton" class="btn_tab_submit blue">加入购物车</span>
+				{/if}
+			</div>
+		</div>
+	</footer>
+</section>
+<script>
+$(function(){
+	//初始化商品详情对象
+	var productInstance = new productClass("{$id}","{$this->user['user_id']}","{$promo}","{$active_id}","{$type}");
+	// 隐藏底部导航
+	$(".footer_nav").hide();
+	// 设置焦点图
+	$(".goods_foucs").MobileSlider({width:720,height:720});
+	$(".article_detail").find('*').each(function(){
+		var t = $(this);
+		if (t.attr("style")){t.attr("style","")};
+		if (t.attr("width")){t.attr("width","")};
+		if (t.attr("height")){t.attr("height","")};
+	});
+	$(".pro_tab").on('click', 'li', function(){
+		var t = $(this),i = t.index();
+		t.addClass('on').siblings('li').removeClass('on');
+		$(".pro_con").children('.con').eq(i).removeClass('none').siblings('.con').addClass('none');
+		//滑动按钮绑定事件
+		switch(i)
+		{
+			case 0:
+			{
+				toggle(true);
+			}
+			break;
+			case 1:
+			{
+				toggle();
+				productInstance.comment_ajax();
+			}
+			break;
+
+			case 2:
+			{
+				toggle();
+				productInstance.refer_ajax();
+			}
+			break;
+		}
+	});
+	// 切换展示
+	function toggle(flag) {
+		if (flag) {
+			$(".goods_foucs").show();
+			$(".pro_tab").prevAll().show();
+		} else {
+			$(".goods_foucs").hide();
+			$(".pro_tab").prevAll().hide();
+		}
+	}
+})
+</script>
+<script id="ticketTemplate" type="text/html">
+<div id="ticket-list-product">
+	{foreach:items=$goodsTicketList item=$ticketItem}
+    <div class="ticket-item-product">
+        <a href="javascript:getTicket({$ticketItem['id']});" class="ticket-item-main-product">
+            <div class="ticket-view-product">
+                <p class="ticket-view-price-product"><i>¥</i><strong>{echo:str_replace(".00","",$ticketItem['value'])}</strong></p>
+                <p class="ticket-view-des-product">{echo:ticket::note($ticketItem['id'],'limit_sum')}</p>
+            </div>
+            <div class="ticket-info-product">
+                <p class="ticket-info-text-product">{$ticketItem['name']}({echo:ticket::note($ticketItem['id'],'platform')}{echo:ticket::note($ticketItem['id'],'category')})</p>
+                <span class="ticket-info-btn-product">领取</span>
+                <p class="ticket-info-date-product">{echo:str_replace('-','月',substr($ticketItem['start_time'],5,5))}日-{echo:str_replace('-','月',substr($ticketItem['end_time'],5,5))}日有效</p>
+            </div>
+        </a>
+    </div>
+	{/foreach}
+</div>
+</script>

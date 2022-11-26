@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>{$this->_siteConfig->name}</title>
+	<link type="image/x-icon" href="{webroot:favicon.ico}" rel="icon">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="apple-touch-icon-precomposed" href="{skin:image/logo.png}">
+	{js:jquery}
+	{js:form}
+	{js:validate}
+	{js:dialog}
+	{js:artTemplate}
+	<script type='text/javascript' src="{theme:javascript/site.js}"></script>
+	<script src="{theme:javascript/base/base.js?v=20180306}"></script>
+	<script type='text/javascript' src='{webroot:public/javascript/public.js}'></script>
+	{js:layer_mobile}
+	{js:lazyLoad}
+	<link rel="stylesheet" href="{skin:css/style.css}">
+</head>
+<body>
+	<div class="app">
+		{if:IWeb::$app->getController()->getId() == 'site' && IWeb::$app->getController()->getAction()->getId() == 'index'}
+		<header class="home_header fixed top z2">
+			<h1 class="logo">
+				<!-- 这里并没有设置后台设定的LOGO,因为一般移动端的LOGO和PC端的是不一样的,所以,直接替换模版中的LOGO文件比较格式 -->
+				<img src="{skin:image/logo.png}" alt="{$this->_siteConfig->name}">
+			</h1>
+			<section class="search">
+				<!--搜索框 开始-->
+				<form method='get' action='{url:/}'>
+					<input type='hidden' name='controller' value='site' />
+					<input type='hidden' name='action' value='search_list' />
+					<input type="text" class="search_word" name='word' placeholder="请输入关键词">
+					<input type="submit" class="search_submit" value="GO">
+				</form>
+				<!--搜索框 结束-->
+			</section>
+		</header>
+		{else:}
+		<header class="header fixed top z2">
+			<div class="header_goback">返回上一页</div>
+			<h1 class="header_title">{$this->_siteConfig->name}</h1>
+			{if:$this->user}
+			{else:}
+			<a href="{url:simple/login}" class="header_login">登录/注册</a>
+			{/if}
+		</header>
+		{/if}
+		<!-- 头部结束 -->
+
+		<section class="viewport {if:IWeb::$app->getController()->getId() == 'site' && IWeb::$app->getController()->getAction()->getId() == 'index'}home{/if} z1">
+		{viewcontent}
+		</section>
+
+	    <!--页脚 结束-->
+	    <nav class="footer_nav fixed bottom z3">
+	    	<ul>
+	    		<li class="nav_home"><a href="{url:/}"><i class="fa fa-home"></i><span>首页</span></a></li>
+	    		<li class="nav_menu"><a href="{url:/site/sitemap}"><i class="fa fa-reorder"></i><span>分类</span></a></li>
+	    		<li class="nav_cart"><a href="{url:/simple/cart}"><i class="fa fa-shopping-cart"></i><span>购物车</span></a></li>
+	    		<li class="nav_user"><a href="{url:/ucenter/index}"><i class="fa fa-user"></i><span>我的</span></a></li>
+	    	</ul>
+	    </nav>
+		<section id="layout_bottom" class="fixed bottom z3"></section>
+	</div>
+</body>
+</html>

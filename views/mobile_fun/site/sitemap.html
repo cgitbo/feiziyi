@@ -1,0 +1,58 @@
+<div id="pageInfo" data-title="栏目分类" data-goback="{url:/}"></div>
+<div class="sitemap">
+	<ul class="sitemap_first">
+		{foreach:items=Api::run('getCategoryListTop')  item=$first}
+			<li id="cat{$first['id']}"><a href="#cat{$first['id']}">{$first['name']}</a></li>
+		{/foreach}
+	</ul>
+	<div class="sitemap_son">
+		{foreach:items=Api::run('getCategoryListTop')  item=$first}
+			<div class="sitemap_son_item">
+				<h3><a href="{url:/site/pro_list/cat/$first[id]}">{$first['name']}</a></h3>
+				{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$first['id'])) item=$second}
+				<dl>
+					<dt>
+						<a href="{url:/site/pro_list/cat/$second[id]}">
+							<span>{$second['name']}</span>
+							<i class="fa fa-angle-right"></i>
+						</a>
+					</dt>
+					<dd>
+						{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$second['id'])) item=$third}
+						<a href="{url:/site/pro_list/cat/$third[id]}">{$third['name']}</a>
+						{/foreach}
+					</dd>
+				</dl>
+				{/foreach}
+			</div>
+		{/foreach}
+	</div>
+</div>
+<script>
+$(function(){
+	// 给底部导航加上当前样式
+	$(".nav_menu").addClass('on');
+
+	// 初始化二级显示
+	var mapSonDl = $(".sitemap_son").children('.sitemap_son_item');
+	mapSonDl.each(function(i){
+		var t = $(this);
+		i == 0 ? t.show() : t.hide();
+	});
+
+	// 一级菜单切片效果
+	var mapFirst = $(".sitemap_first").children('li');
+	mapFirst.each(function(i){
+		var t = $(this);
+		i == 0 ? t.addClass('on') : t.removeClass('on');
+		t.on('click',function(){
+			t.addClass('on').siblings('li').removeClass('on');
+			mapSonDl.eq(i).show().siblings('.sitemap_son_item').hide();
+		});
+	});
+
+	//自动跳转已经点击过的分类
+	var catId = window.location.hash;
+	catId ? $(catId).trigger('click') : "";
+})
+</script>
