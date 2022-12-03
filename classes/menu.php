@@ -15,9 +15,9 @@ class Menu
 			'商品管理'=>array(
 			    '/goods/goods_list' => '商品列表',
 			    '/goods/goods_edit' => '添加普通商品',
-			    '/goods/goods_edit/type/code' => '添加服务类商品',
-			    '/goods/goods_edit/type/download' => '添加下载类商品',
-			    '/goods/goods_edit/type/preorder' => '添加时间类商品'
+			    // '/goods/goods_edit/type/code' => '添加服务类商品',
+			    // '/goods/goods_edit/type/download' => '添加下载类商品',
+			    // '/goods/goods_edit/type/preorder' => '添加时间类商品'
 			),
 			'商品分类'=>array(
 				'/goods/category_list'	=>	'分类列表',
@@ -70,7 +70,7 @@ class Menu
 	   '订单'=>array(
         	'订单管理'=>array(
                 '/order/order_list' => '订单列表',
-                '/order/order_edit' => '添加订单',
+                // '/order/order_edit' => '添加订单',
         		'/order/refundment_list' => '退款申请列表',
         		'/order/exchange_list'   => '换货申请列表',
         		'/order/fix_list'        => '维修申请列表',

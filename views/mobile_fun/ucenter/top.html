@@ -1,0 +1,54 @@
+<div id="pageInfo" data-title="排行榜" data-goback="{url:/ucenter/index}"></div>
+
+<style>
+    .time { float: right;}
+</style>
+
+<section id="address_list" class="address_list">
+	<ul>
+		{foreach:items=$this->top}
+		<li data-value="1" {if:$item['is_default']==1}class="default on"{/if}>
+			<header class="address_list_header">
+				<strong class="name">{$item['username']}</strong>
+				<span class="phone">{$item['mobile']}</span>
+                <span class="time">{echo:intval($item['count'])}</span>
+			</header>
+			<section class="address_list_section">
+				会员组：{$this->levelText[$item['level']]}
+			</section>
+		</li>
+		{/foreach}
+	</ul>
+
+    {if:!$items}
+    <section class="nothing">
+        <i class="fa fa-info-circle"></i>
+        <p>暂无记录</p>
+    </section>
+    {/if}
+</section>
+
+
+
+<script>
+$(function(){
+	// 内页隐藏页底导航
+	$(".footer_nav").hide();
+
+    // 打开关闭编辑模式
+	var btn = $("#address_edit_btn"),
+		list = $("#address_list").find('li');
+	btn.on('click',function(){
+		var t = $(this),
+			v = t.data('v');
+		if(v==1){
+			t.html("编辑").data('v', '0');
+			list.children('footer').hide();
+		}else{
+			t.html("取消").data('v', '1');
+			list.children('footer').css('display','table');
+		}
+	});
+});
+
+</script>

@@ -12,7 +12,7 @@ class Member extends IController implements adminAuthorization
 
 	function init()
 	{
-
+		$this->levelText = pool::levelText();
 	}
 
 	/**
@@ -61,6 +61,8 @@ class Member extends IController implements adminAuthorization
 		$exp        = IFilter::act(IReq::get('exp'),'int');
 		$point      = IFilter::act(IReq::get('point'),'int');
 		$status     = IFilter::act(IReq::get('status'),'int');
+
+		$level     = IFilter::act(IReq::get('level'),'int');
 
 		$_POST['area'] = "";
 		if($province && $city && $area)
@@ -127,6 +129,7 @@ class Member extends IController implements adminAuthorization
 		{
 			$user = array(
 				'username' => $user_name,
+				'level'    => $level,
 				'password' => md5($password),
 			);
 			$userDB->setData($user);
@@ -143,6 +146,7 @@ class Member extends IController implements adminAuthorization
 		{
 			$user = array(
 				'username' => $user_name,
+				'level'    => $level,
 			);
 			//修改密码
 			if($password)
@@ -200,17 +204,18 @@ class Member extends IController implements adminAuthorization
 		$this->setRenderData($this->data);
         $page  = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
         $query = new IQuery("user as u");
-        $query->join   = 'left join member as m on m.user_id = u.id';
+        $query->join   = 'left join member as m on m.user_id = u.id left join user as fu on fu.id = u.fid';
         $query->where  = 'm.status != 2 and '.$where;
-        $query->fields = 'm.*,u.username';
+        $query->fields = 'm.*,u.username,fu.username as parentname,u.level';
         $query->order  = 'm.user_id desc';
         $query->page   = $page;
         $this->query   = $query;
+
 		$this->redirect('member_list');
 	}
 
 	/**
-	 * 用户预存款管理页面
+	 * 用户如意金管理页面
 	 */
 	function member_balance()
 	{
@@ -238,7 +243,7 @@ class Member extends IController implements adminAuthorization
 		}
 		$this->member_list();
 	}
-	//批量用户预存款操作
+	//批量用户如意金操作
     function member_recharge()
     {
     	$id       = IFilter::act(IReq::get('check'),'int');
@@ -259,7 +264,7 @@ class Member extends IController implements adminAuthorization
 
 		foreach($memberData as $value)
 		{
-			//用户预存款进行的操作记入account_log表
+			//用户如意金进行的操作记入account_log表
 			$log = new AccountLog();
 			$config=array
 			(
@@ -274,6 +279,25 @@ class Member extends IController implements adminAuthorization
 			{
 				die(JSON::encode(array('flag' => 'fail','message' => $log->error)));
 			}
+		}
+		die(JSON::encode(array('flag' => 'success')));
+    }
+
+    function pool_edit()
+    {
+    	$pool  = IFilter::act(IReq::get('pool'),'float');
+    	$type  = IFIlter::act(IReq::get('type')); //操作类型 add增加,sub减少
+
+		if ($type == 'sub') $pool = '-'.$pool; 
+
+		$poolObj = new Pool();
+		$re = $poolObj->update([
+			'pool' => $pool,
+		]);
+
+		if($re == false)
+		{
+			die(JSON::encode(array('flag' => 'fail','message' => $poolObj->error)));
 		}
 		die(JSON::encode(array('flag' => 'success')));
     }
@@ -522,7 +546,7 @@ class Member extends IController implements adminAuthorization
 			if($memberRow['balance'] < $withdrawRow['amount'])
 			{
 				$failNum++;
-				$error .= $withdrawRow['name'].'预存款余额不足';
+				$error .= $withdrawRow['name'].'如意金余额不足';
 				continue;
 			}
 
@@ -556,7 +580,7 @@ class Member extends IController implements adminAuthorization
 							'openid'           => $openid,
 							're_user_name'     => $withdrawRow['name'],
 							'amount'           => $withdrawRow['amount'],
-							'desc'             => IWeb::$app->getController()->_siteConfig->name.'预存款余额提现',
+							'desc'             => IWeb::$app->getController()->_siteConfig->name.'如意金余额提现',
 							'partner_trade_no' => $billNo,
 							'payment_id'       => $payment_id,
 						];
@@ -591,7 +615,7 @@ class Member extends IController implements adminAuthorization
 
 			if($payCheck == true)
 			{
-				//用户预存款进行的操作记入account_log表
+				//用户如意金进行的操作记入account_log表
 				$log    = new AccountLog();
 				$config = [
 					'user_id'  => $withdrawRow['user_id'],
@@ -872,7 +896,7 @@ class Member extends IController implements adminAuthorization
 		plugin::trigger("updateSellerStatus",$id);
 	}
 
-	//导出预存款excel
+	//导出如意金excel
 	public function balance_report()
 	{
 		$memberQuery = new IQuery('member as m');

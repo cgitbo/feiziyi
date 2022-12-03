@@ -11,10 +11,10 @@
 /**
  * @class ProRule
  * @brief 促销活动规则奖励
-          奖励方式分为 (1)现金奖励,(2)赠品奖励,(3)预存款奖励
+          奖励方式分为 (1)现金奖励,(2)赠品奖励,(3)如意金奖励
           (1)现金奖励就是直接减少订单总额中的金钱数
           (2)赠品奖励就是订单支持成功后，系统自动发送的赠品
-          (3)预存款奖励就是直接充值到用户帐户预存款中
+          (3)如意金奖励就是直接充值到用户帐户如意金中
  */
 class ProRule
 {
@@ -189,7 +189,7 @@ class ProRule
 
 			case "10":
 		    {
-		        return '在线充值满￥'.$condition.' 赠送预存款￥'.$awardValue;
+		        return '在线充值满￥'.$condition.' 赠送如意金￥'.$awardValue;
 		    }
 		    break;
 
@@ -414,7 +414,7 @@ class ProRule
 	}
 
 	/**
-	 * @brief 在线充值赠送预存款的活动内容
+	 * @brief 在线充值赠送如意金的活动内容
 	 * @param integer $money 充值金额
 	 */
 	public function payPromotion($money)
@@ -457,7 +457,7 @@ class ProRule
 	            {
 	                case '10':
                     {
-                        // 赠送预存款
+                        // 赠送如意金
                         $log = new AccountLog();
                         $note = $this->typeExplain($award_type, $val['condition'], $award_value);
                         $logConfig = array(

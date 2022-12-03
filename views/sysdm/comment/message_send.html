@@ -22,7 +22,7 @@
             <option value="group_id">用户组</option>
             <option value="mobile">用户手机号</option>
             <option value="point">积分区间</option>
-            <option value="balance">预存款区间</option>
+            <option value="balance">如意金区间</option>
         </select>
         <span id="conditionBox" style="margin-left:20px;"></span>
     </div>
@@ -78,8 +78,8 @@ function changeCondition(obj)
 
         case "balance":
         {
-            templateHtml = "<input type='text' class='form-control' name='search[balance_min]' placeholder='预存款最小值' pattern='int' /> —— ";
-            templateHtml+= "<input type='text' class='form-control' name='search[balance_max]' placeholder='预存款最大值' pattern='int' />";
+            templateHtml = "<input type='text' class='form-control' name='search[balance_min]' placeholder='如意金最小值' pattern='int' /> —— ";
+            templateHtml+= "<input type='text' class='form-control' name='search[balance_max]' placeholder='如意金最大值' pattern='int' />";
         }
         break;
 

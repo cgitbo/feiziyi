@@ -72,6 +72,7 @@ class IModel
 		if(is_array($data))
 		{
 			$this->tableData = $data;
+			return $this;
 		}
 		else
 			return false;

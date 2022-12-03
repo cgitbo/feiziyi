@@ -9,6 +9,9 @@
 			{if:$this->order_info['distribution']}
             配送方式： {$this->order_info['delivery']}
 			{/if}
+			{if:$this->order_info['t_user']}
+			<br>订单用户： {$this->order_info['t_user']['username']}
+			{/if}
 		</p>
 		<!-- 如果没有物流信息,直接不输出以下内容 -->
 		{if:isset($this->order_info['freight'])}

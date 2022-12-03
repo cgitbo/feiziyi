@@ -10,12 +10,12 @@
 	</div>
 	<div class="user_info_int">
 		<dl>
-			<dt>帐户预付款</dt>
+			<dt>帐户如意金</dt>
 			<dd>￥{$user['balance']}</dd>
 		</dl>
 		<dl>
 			<dt>我的会员组</dt>
-			<dd>{$user['group_name']}</dd>
+			<dd>{$this->levelText[$user['level']]}</dd>
 		</dl>
 		<dl>
 			<dt>我的积分</dt>
@@ -27,6 +27,9 @@
 	<ul>
 		{foreach:items=menuUcenter::init()}
 		{foreach:items=$item key=$moreKey item=$moreValue}
+		{if:$user['level']<2 && $moreValue=='排行榜'}
+		 <?php continue;?>
+		{/if}
 		<li><a href="{url:$moreKey}"><i class="{echo:isset(menuUcenter::$ico[$moreValue])?menuUcenter::$ico[$moreValue]:'fa fa-question'}"></i><strong>{$moreValue}</strong></a></li>
 		{/foreach}
 		{/foreach}

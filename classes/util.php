@@ -155,11 +155,11 @@ class Util
             $revInfo[] = "【积分区间：".$info['point_min']."——".$info['point_max']."】";
         }
 
-        //预存款区间
+        //如意金区间
         if(isset($info['balance_min']) && isset($info['balance_max']) && $info['balance_min'] && $info['balance_max'])
         {
             $where[] = "m.balance BETWEEN ".$info['balance_min']." and ".$info['balance_max'];
-            $revInfo[] = "【预存款区间：".$info['balance_min']."——".$info['balance_max']."】";
+            $revInfo[] = "【如意金区间：".$info['balance_min']."——".$info['balance_max']."】";
         }
 
         if($where)

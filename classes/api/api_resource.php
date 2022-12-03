@@ -530,7 +530,7 @@ return array(
         )
     ),
 
-    //用户中心-账户预存款
+    //用户中心-账户如意金
     'getUcenterAccoutLog' => array(
         'file' => 'ucenter.php','class' => 'APIUcenter'
     ),

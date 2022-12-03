@@ -1,5 +1,5 @@
 {set:$breadGuide = goods_class::catRecursion($this->catId)}
-{set:$goodsObj = search_goods::find(array('category_extend' => $this->childId),20);$resultData = $goodsObj->find()}
+{set:$goodsObj = search_goods::find(array('category_extend' => $this->childId, 'active_id' => 0),20);$resultData = $goodsObj->find()}
 <div id="pageInfo" data-title="{$this->catRow['name']}"></div>
 
 {if:$resultData}

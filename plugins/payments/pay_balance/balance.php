@@ -2,7 +2,7 @@
 /**
  * @copyright Copyright(c) 2011 aircheng.com
  * @file pay_balance.php
- * @brief 账户预存款支付接口
+ * @brief 账户如意金支付接口
  * @author chendeshan
  * @date 2011-01-27
  * @version 0.6
@@ -11,12 +11,12 @@
 
  /**
  * @class balance
- * @brief 账户预存款支付接口
+ * @brief 账户如意金支付接口
  */
 class balance extends paymentPlugin
 {
 	//插件名称
-    public $name = '账户预存款支付';
+    public $name = '账户如意金支付';
 
 	/**
 	 * @see paymentplugin::getSubmitUrl()
@@ -62,7 +62,7 @@ class balance extends paymentPlugin
 
     	if(stripos($ExternalData['order_no'],'recharge') !== false)
     	{
-        	$message = '预存款支付方式不能用于在线充值';
+        	$message = '如意金支付方式不能用于在线充值';
         	return false;
     	}
 

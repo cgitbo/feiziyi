@@ -9,7 +9,7 @@
  */
 class APIUcenter
 {
-    ///用户中心-账户预存款
+    ///用户中心-账户如意金
     public function getUcenterAccoutLog($userid = '')
     {
         $userid = $userid ? IFilter::act($userid,'int') : IWeb::$app->getController()->user['user_id'];

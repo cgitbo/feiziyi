@@ -10,7 +10,7 @@ class Ucenter extends IController implements userAuthorization
 
 	public function init()
 	{
-
+		$this->levelText = pool::levelText();
 	}
     public function index()
     {
@@ -589,7 +589,154 @@ class Ucenter extends IController implements userAuthorization
     	$this->info();
     }
 
-    //[账户预存款] 展示[单页]
+
+    //[账户如意金] 转账[单页]
+    function transfer()
+    {
+    	$user_id   = $this->user['user_id'];
+
+		$fid = IReq::get('fid');
+
+    	$memberObj = new IModel('member','balance');
+    	$where     = 'user_id = '.$user_id;
+    	$this->memberRow = $memberObj->getObj($where);
+
+		if ($fid) {
+			$this->transferUserRow = (new IModel('user'))->getObj('id = '.$fid);
+		}
+
+    	$this->redirect('transfer');
+    }
+
+	//[账户如意金] 转账动作
+    function transfer_act()
+    {
+    	$user_id = $this->user['user_id'];
+    	$amount  = IFilter::act( IReq::get('amount','post') ,'float' );
+    	$transferUsername  = IFilter::act( IReq::get('transferUsername','post'));
+
+    	$message = '';
+
+    	$dataArray = array(
+    		'transferUsername' => $transferUsername,
+			'amount' => $amount,
+			'user_id'=> $user_id,
+			'time'   => ITime::getDateTime(),
+    	);
+
+		$memberObj = new IModel('member');
+		$where     = 'user_id = '.$user_id;
+		$memberRow = $memberObj->getObj($where,'balance');
+
+		$userObj = new IModel('user');
+		$transferRow = $userObj->getObj('username = "'.$transferUsername.'"');
+
+		$userRow = $userObj->getObj('id = "'.$user_id.'"');
+
+		if (!$transferRow) {
+			$message = '对方用户不存在';
+		}
+
+		else if($amount > $memberRow['balance'])
+		{
+			$message = '转账的金额不能大于您的帐户如意金';
+		}
+		
+		else {
+			$log = new AccountLog();
+			$config = array(
+				'user_id'   => $user_id,
+				'event'     => 'transfer',
+				'note'      => '转给:['.$transferUsername .']，数量：'.$amount,
+				'num'       => $amount,
+				'way'       => AccountLog::way('offline'),
+			);
+
+			if (!$log->write($config)) {
+				$message = $log->error;
+			}
+
+			else {
+				$relog = new AccountLog();
+				$reconfig = array(
+					'user_id'   => $transferRow['id'],
+					'event'     => 'transfer_in',
+					'note'      => '收到:['.$userRow['username'] .']的转账，数量：'.$amount,
+					'num'       => $amount,
+					'way'       => AccountLog::way('offline'),
+				);
+				
+				if ($relog->write($reconfig) ){
+					return $this->redirect('account_log');
+				}
+
+				$message = $relog->error;
+			}
+		}
+
+		if($message != '')
+		{
+			$this->memberRow = array('balance' => $memberRow['balance']);
+			$this->withdrawRow = $dataArray;
+			$this->redirect('transfer',false);
+			Util::showMessage($message);
+		}
+    }
+
+	function team()
+	{
+		$userDB = new IModel('user as u , member as m');
+
+		$this->team = $userDB->query('u.id = m.user_id and u.fid =' . $this->user['user_id']);
+
+		$this->user = $userDB->getObj('u.id = m.user_id and u.id =' . $this->user['user_id']);
+
+    	$this->redirect('team');
+	}
+
+	function top()
+	{
+		$query = new IQuery('user as u ');
+		$query->join = ' left join member as m on u.id = m.user_id left join user as au on au.fid = u.id';
+		$query->fields = ' u.*, m.*, sum(au.times) as count';
+		$query->where = 'u.level > 0';
+		$query->group = 'u.id';
+		$res = $query->find();
+
+		$this->top = $res;
+
+    	$this->redirect('top');
+	}
+
+	function add_user_act()
+	{
+		//调用_userInfo注册插件
+    	$result = plugin::trigger("userRegAct");
+    	if(is_array($result))
+    	{
+			if ($result['fid']) {
+
+				ISafe::clear('reg_'.$result['fid']);
+
+				return $this->redirect('team');
+			}
+    	}
+    	else
+    	{
+			$this->fid = ISafe::get('reg_'.$this->user['user_id']);
+			$this->setError($result);
+    		$this->redirect('add_user',false);
+    		Util::showMessage($result);
+    	}
+	}
+
+	function add_user()
+	{
+		$this->fid = ISafe::get('reg_'.$this->user['user_id']);
+		$this->redirect('add_user');
+	}
+
+    //[账户如意金] 展示[单页]
     function withdraw()
     {
     	$user_id   = $this->user['user_id'];
@@ -600,7 +747,7 @@ class Ucenter extends IController implements userAuthorization
     	$this->redirect('withdraw');
     }
 
-	//[账户预存款] 提现动作
+	//[账户如意金] 提现动作
     function withdraw_act()
     {
     	$user_id = $this->user['user_id'];
@@ -629,7 +776,7 @@ class Ucenter extends IController implements userAuthorization
 		}
 		else if($amount > $memberRow['balance'])
 		{
-			$message = '提现的金额不能大于您的帐户预存款';
+			$message = '提现的金额不能大于您的帐户如意金';
 		}
 		else if($withdrawDB->getObj('user_id = '.$this->user['user_id'].' and status in (0,1)'))
 		{
@@ -656,7 +803,7 @@ class Ucenter extends IController implements userAuthorization
 		}
     }
 
-    //[账户预存款] 提现详情
+    //[账户如意金] 提现详情
     function withdraw_detail()
     {
     	$user_id = $this->user['user_id'];
@@ -680,7 +827,7 @@ class Ucenter extends IController implements userAuthorization
     	$this->redirect('withdraw');
     }
 
-    //[预存款交易记录]
+    //[如意金交易记录]
     function account_log()
     {
     	$user_id   = $this->user['user_id'];
@@ -839,7 +986,7 @@ class Ucenter extends IController implements userAuthorization
     }
 
     /**
-     * 预存款付款
+     * 如意金付款
      * T:支付失败;
      * F:支付成功;
      */
@@ -858,7 +1005,7 @@ class Ucenter extends IController implements userAuthorization
 		$paymentRow = $paymentDB->getObj('class_name = "balance" ');
 		if(!$paymentRow)
 		{
-			IError::show(403,'预存款支付方式不存在');
+			IError::show(403,'如意金支付方式不存在');
 		}
 
 		$paymentInstance = Payment::createPaymentInstance($paymentRow['id']);
@@ -879,7 +1026,7 @@ class Ucenter extends IController implements userAuthorization
     	if($memberRow['balance'] < $return['total_fee'])
     	{
     	    $recharge = $return['total_fee'] - $memberRow['balance'];
-    	    $this->redirect('/ucenter/online_recharge/_msg/预存款不足请充值 ￥'.$recharge);
+    	    $this->redirect('/ucenter/online_recharge/_msg/如意金不足请充值 ￥'.$recharge);
     	    return;
     	}
 
@@ -891,7 +1038,7 @@ class Ucenter extends IController implements userAuthorization
 			IError::show(403,'订单号【'.$return['order_no'].'】已经被处理过，请查看订单状态');
 		}
 
-		//扣除预存款并且记录日志
+		//扣除如意金并且记录日志
 		$logObj = new AccountLog();
 		$config = array(
 			'user_id'  => $user_id,
@@ -903,7 +1050,7 @@ class Ucenter extends IController implements userAuthorization
 		if(!$is_success)
 		{
 			$orderObj->rollback();
-			IError::show(403,$logObj->error ? $logObj->error : '用户预存款更新失败');
+			IError::show(403,$logObj->error ? $logObj->error : '用户如意金更新失败');
 		}
 
 		//订单批量结算缓存机制

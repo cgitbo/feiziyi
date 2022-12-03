@@ -202,6 +202,23 @@ $(function(){
 				</div>
 			</div>
 			<!--配送方式 结束-->
+
+			{if:$this->tUser['username']}
+			<div class="cart_sect cart_2_pay">
+				<div class="info_head cart_sect_header">订单用户</div>
+				<div class="pay_box">
+					<label>
+						<input name="tid" type="radio" value="{$this->tUser['id']}" checked title="{$this->tUser['username']}" />
+						<div class="info">{$this->tUser['username']}</div>
+					</label>
+
+					<label>
+						<div class="info"><a href="/ucenter/team">切换用户</a> </div>
+					</label>
+				</div>
+			</div>
+			{/if}
+
 			<!--支付方式 开始-->
 			<div class="cart_sect cart_2_pay" id="paymentBox">
 				<div class="info_head cart_sect_header">支付方式</div>
@@ -262,18 +279,18 @@ $(function(){
 				<div class="info_head cart_sect_header">结算信息</div>
 				<div class="count">
 					{if:$this->final_sum != $this->sum}优惠后总金额{else:}商品总金额{/if}：<strong id='goodsSum'>{$this->final_sum}</strong><br>
-					- 优惠券：<strong name='ticket_value'>0</strong><br>
-					+ 税金：<strong id='tax_fee'>0</strong><br>
+					<!-- - 优惠券：<strong name='ticket_value'>0</strong><br> -->
+					<!-- + 税金：<strong id='tax_fee'>0</strong><br> -->
 					+ 运费总计：<strong id='delivery_fee_show'>0</strong><br>
-					+ 保价：<strong id='protect_price_value'>0</strong><br>
+					<!-- + 保价：<strong id='protect_price_value'>0</strong><br> -->
 					{if:$this->spend_point > 0} + 消耗积分：<strong>{$this->spend_point}</strong>{/if}
 				</div>
-				<div class="btn_box">
+				<div class="btn_box none">
 					<div class="btn btn_all btn_pink" onclick="orderFormInstance.ticketShow();">使用优惠券</div>
 				</div>
 			</div>
 			<!-- 发票信息 -->
-			<div class="cart_sect cart_2_tax">
+			<div class="cart_sect cart_2_tax none">
 				<div class="info_head cart_sect_header">发票信息</div>
 				<div class="tax_box">
 					<p>是否需要发票？(税金:￥{$this->goodsTax})</p>

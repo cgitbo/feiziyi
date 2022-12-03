@@ -9,7 +9,7 @@
  */
 
 /**
- * 将对用户预存款进行的操作记入account_log表
+ * 将对用户如意金进行的操作记入account_log表
  *
  * $user_id = 用户id
  *
@@ -18,7 +18,7 @@
  *      'user_id'   => 用户ID
  *      'seller_id' => 商户ID
  *		'admin_id'  => 管理员ID
- *		'event'     => 操作类别 withdraw:提现,pay:预存款支付,recharge:充值,drawback:退款到预存款,commission_withdraw:佣金提现到预存款,recharge_award:充值奖励
+ *		'event'     => 操作类别 withdraw:提现,pay:如意金支付,recharge:充值,drawback:退款到如意金,commission_withdraw:佣金提现到如意金,recharge_award:充值奖励
  *		'note'      => 备注信息 如果不设置的话则根据event类型自动生成，如果设置了则不再对数据完整性进行检测，比如是否设置了管理员id、订单信息等
  *		'num'       => 金额     整形或者浮点，正为增加，负为减少
  * 		'order_no'  => 订单号   drawback类型的log需要这个值
@@ -43,21 +43,27 @@ class AccountLog
 	public  $error    = "";//错误信息
 
 	private $allow_event = array(
-		'recharge'=> 1,//充值到预存款
-		'withdraw'=> 2,//从预存款提现
-		'pay'     => 3,//从预存款支付
-		'drawback'=> 4,//退款到预存款
-		'commission_withdraw'=> 5,//佣金提现到预存款
+		'recharge'=> 1,//充值到如意金
+		'withdraw'=> 2,//从如意金提现
+		'pay'     => 3,//从如意金支付
+		'drawback'=> 4,//退款到如意金
+		'commission_withdraw'=> 5,//佣金提现到如意金
 	    'recharge_award'=> 6,//充值奖励
+
+	    'transfer'=> 10,//转出
+	    'transfer_in'=> 11,//转入
 	);
 
 	private static $event_text = array(
 		1 => "充值",
 		2 => "提现",
-		3 => "预存款支付",
+		3 => "如意金支付",
 		4 => "退款",
 		5 => "分销佣金",
 	    6 => "充值奖励",
+
+	    10 => "转出",
+	    11 => "转入",
 	);
 
 	//获取事件的文字描述
@@ -67,7 +73,7 @@ class AccountLog
 	}
 
 	/**
-	 * 写入日志并且更新账户预存款
+	 * 写入日志并且更新账户如意金
 	 * @param array $config config数据类型
 	 * @return string|bool
 	 */
@@ -92,14 +98,14 @@ class AccountLog
 			$this->amount = abs(round($config['num'],2));
 
 			//金额正负值处理
-			if(in_array($this->allow_event[$this->event],array(2,3)))
+			if(in_array($this->allow_event[$this->event],array(2,3,10)))
 			{
 				$this->amount = '-'.abs($this->amount);
 			}
 		}
 		else
 		{
-			$this->error = "金额必须大于0元";
+			$this->error = "金额必须大于0";
 			return false;
 		}
 
@@ -110,17 +116,17 @@ class AccountLog
 		$finnalAmount = $this->user['balance'] + $this->amount;
 		if($finnalAmount < 0)
 		{
-			$this->error = "用户预存款不足";
+			$this->error = "用户如意金不足";
 			return false;
 		}
 
-		//对用户预存款进行更新
+		//对用户如意金进行更新
 		$memberDB    = new IModel('member');
 		$memberDB->setData(array("balance" => $finnalAmount));
 		$isChBalance = $memberDB->update("user_id = ".$this->user['id']);
 		if(!$isChBalance)
 		{
-			$this->error = "预存款数据更新失败";
+			$this->error = "如意金数据更新失败";
 			return false;
 		}
 
@@ -245,14 +251,14 @@ class AccountLog
 				{
 					throw new IException("管理员信息不存在，无法提现");
 				}
-				$note .= "管理员[{$this->admin['admin_name']}]给用户[{$this->user['username']}] {$this->config['way']}提现，金额：{$this->amount}元";
+				$note .= "管理员[{$this->admin['admin_name']}]给用户[{$this->user['username']}] {$this->config['way']}提现，金额：{$this->amount}";
 			}
 			break;
 
 			//支付
 			case 'pay':
 			{
-				$note .= "用户[{$this->user['username']}]使用预存款支付购买，订单[{$this->config['order_no']}]，金额：{$this->amount}元";
+				$note .= "用户[{$this->user['username']}]使用如意金支付购买，订单[{$this->config['order_no']}]，金额：{$this->amount}";
 			}
 			break;
 
@@ -263,7 +269,7 @@ class AccountLog
 				{
 					$note .= "管理员[{$this->admin['admin_name']}]给";
 				}
-				$note .= "用户[{$this->user['username']}] {$this->config['way']}充值，金额：{$this->amount}元";
+				$note .= "用户[{$this->user['username']}] {$this->config['way']}充值，金额：{$this->amount}";
 			}
 			break;
 
@@ -284,11 +290,11 @@ class AccountLog
 				{
 					$note .= "管理员[{$this->admin['admin_name']}]操作";
 				}
-				$note .= "订单[{$this->config['order_no']}]退款到用户[{$this->user['username']}]预存款，金额：{$this->amount}元";
+				$note .= "订单[{$this->config['order_no']}]退款到用户[{$this->user['username']}]如意金，金额：{$this->amount}";
 			}
 			break;
 
-			//佣金提现到预存款
+			//佣金提现到如意金
 			case 'commission_withdraw':
 			{
 				if (is_null($this->admin))
@@ -299,7 +305,7 @@ class AccountLog
 				{
 					$note .= "管理员[{$this->admin['admin_name']}]";
 				}
-				$note .= "给用户[{$this->user['username']}]佣金提现，金额：{$this->amount}元，关联订单ID[{$this->config['commission_order_id']}]";
+				$note .= "给用户[{$this->user['username']}]佣金提现，金额：{$this->amount}，关联订单ID[{$this->config['commission_order_id']}]";
 			}
 			break;
 
@@ -333,7 +339,7 @@ class AccountLog
 		return strtr($templateString,$replaceData);
 	}
 
-    //[账户预存款] 提现状态判定
+    //[账户如意金] 提现状态判定
     public static function getWithdrawStatus($status)
     {
     	$data = array(

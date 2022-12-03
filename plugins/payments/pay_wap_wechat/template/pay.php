@@ -16,7 +16,7 @@ function onBridgeReady()
 			"appId" : "<?php echo $return['appId'];?>",//公众号名称，由商户传入
 			"timeStamp":"<?php echo $return['timeStamp'];?>",//时间戳，自1970年以来的秒数
 			"nonceStr" : "<?php echo $return['nonceStr'];?>", //随机串
-			"package" : "<?php echo $return['package'];?>",//生成预付款订单
+			"package" : "<?php echo $return['package'];?>",//生成如意金订单
 			"signType" : "<?php echo $return['signType'];?>",//微信签名方式:
 			"paySign" : "<?php echo $return['paySign'];?>" //微信签名
 		},

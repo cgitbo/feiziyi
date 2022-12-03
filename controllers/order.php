@@ -276,7 +276,7 @@ class Order extends IController implements adminAuthorization
 		$way = IFilter::act(IReq::get('way'));
 		$refunds_nums = IFilter::act( IReq::get('refunds_nums'),'int' );
 
-		//访客订单不能退款到预存款中
+		//访客订单不能退款到如意金中
 		if(!$user_id && $way == "balance")
 		{
 			die('<script text="text/javascript">parent.actionCallback("游客无法退款");</script>');

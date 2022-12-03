@@ -149,10 +149,33 @@ class Site extends IController
 		echo JSON::encode($result);
 	}
 
+	function costpoint() {
+		// 当前用户 帮购买
+		if ($this->user) {
+			$uid = $this->user['user_id'];
+			if ($tid = IFilter::act(IReq::get('tid'),'int')) {
+				ISafe::set($uid.'_tid', $tid);
+			} else {
+				ISafe::clear($uid.'_tid');
+			}
+		}
+		$this->redirect('costpoint');
+	}
+
 	//[列表页]商品
 	function pro_list()
 	{
 		$this->catId = IFilter::act(IReq::get('cat'),'int');//分类id
+		
+		// 当前用户 帮购买
+		if ($this->user) {
+			$uid = $this->user['user_id'];
+			if ($tid = IFilter::act(IReq::get('tid'),'int')) {
+				ISafe::set($uid.'_tid', $tid);
+			} else {
+				ISafe::clear($uid.'_tid');
+			}
+		}
 
 		//查找分类信息
 		$catObj       = new IModel('category');

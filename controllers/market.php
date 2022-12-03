@@ -639,7 +639,7 @@ class Market extends IController implements adminAuthorization
 		}
 	}
 
-	//账户预存款记录
+	//账户如意金记录
 	function account_list()
 	{
 		$page   = IReq::get('page') ? intval(IReq::get('page')) : 1;
@@ -1381,7 +1381,7 @@ class Market extends IController implements adminAuthorization
 		}
 	}
 
-	//账户预存款操作记录导出
+	//账户如意金操作记录导出
 	public function account_report()
 	{
 		$where  = Util::search(IReq::get('search'));

@@ -163,6 +163,12 @@ class _userInfo extends pluginBase
     	$captcha    = IFilter::act(IReq::get('captcha','post'));
     	$_captcha   = ISafe::get('captcha');
 
+    	$fid = IReq::get('fid','post');
+
+		if ($fid && $uid = IWeb::$app->getController()->user['user_id']) {
+			ISafe::set('reg_'.$uid, $fid);
+		}
+
     	//获取注册配置参数
 		$siteConfig = new Config('site_config');
 		$reg_option = $siteConfig->reg_option;
@@ -254,6 +260,20 @@ class _userInfo extends pluginBase
 			'username' => $username,
 			'password' => md5($password),
 		);
+
+
+		// 邀请人验证
+		if ($fid) {
+			$userObj = new IModel('user');
+			$userRow = $userObj->getObj('id = '.$fid);
+			if(!$userRow)
+			{
+				return "邀请人不存在";
+			}
+
+			$userArray['fid'] = $fid;
+		}
+
 		$userObj->setData($userArray);
 		$user_id = $userObj->add();
 		if(!$user_id)
@@ -291,7 +311,7 @@ class _userInfo extends pluginBase
 			ISafe::clear('code'.$mobile);
 		}
 
-		$this->userLoginCallback($userArray);
+		if (!$fid) $this->userLoginCallback($userArray);
 		return $userArray;
 	}
 

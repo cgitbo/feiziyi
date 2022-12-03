@@ -345,6 +345,12 @@ class Simple extends IController
 			}
 		}
 
+		// 要帮购买的用户
+		$this->tUser = [];
+		if ($tid = ISafe::get( $user_id.'_tid')) {
+			$this->tUser = (new IModel('user'))->getObj('id =' .$tid);
+		}
+
     	//返回值
 		$this->ticketRow = $ticketRow;
     	$this->final_sum = $result['final_sum'];
@@ -406,6 +412,8 @@ class Simple extends IController
     	$endDate       = IFilter::act(IReq::get('end_date'),'date');
     	$dataArray     = [];
     	$user_id       = ($this->user['user_id'] == null) ? 0 : $this->user['user_id'];
+
+    	$tid      = IFilter::act(IReq::get('tid'),'int');
 
 		//获取商品数据信息
 		$preorderDate= $startDate && $endDate ? [$startDate,$endDate] : [];
@@ -520,6 +528,7 @@ class Simple extends IController
     	$checkData = array(
     		"mobile" => $mobile,
     	);
+		if ($tid) $checkData['tid'] = $tid;
     	$result = order_class::checkRepeat($checkData,$goodsResult['goodsList']);
     	if(is_string($result))
     	{
@@ -653,6 +662,9 @@ class Simple extends IController
 
                 //商品类型
                 'goods_type'          => $goodsResult['goodsType'],
+
+				// 帮购买订单的用户ID
+				'tid'  => $tid,
 			);
 
             //优惠券金额抵扣

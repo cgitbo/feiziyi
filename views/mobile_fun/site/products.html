@@ -50,7 +50,7 @@
 			</div>
 			{/if}
 			<p><em class="fr">库存:<span id="data_storeNums">{$store_nums}</span>件</em>预计3-7个工作日送达</p>
-			<p><em class='fr'>销量:{$sale}{$unit}</em><em class="star star_{echo:Common::gradeWidth($grade,$comments)}"></em>(已有{$comments}人评价)</p>
+			<!-- <p><em class='fr'>销量:{$sale}{$unit}</em><em class="star star_{echo:Common::gradeWidth($grade,$comments)}"></em>(已有{$comments}人评价)</p> -->
 		</section>
 
 		<!--商家信息 开始-->
@@ -104,13 +104,13 @@
 				</dd>
 			</dl>
 		</section>
-		<section class="pro_tab">
+		<!-- <section class="pro_tab">
 			<ul>
 				<li class="on">商品详情</li>
 				<li>商品评论</li>
 				<li>商品咨询</li>
 			</ul>
-		</section>
+		</section> -->
 		<section class="pro_con">
 			<div class="con">
 				{if:isset($content) && $content}
@@ -181,17 +181,17 @@
 						<span>首页</span>
 					</a>
 				</li>
-				<li>
+				<!-- <li>
 					<a href="{url:/simple/cart}">
 						<i class="fa fa-shopping-cart"></i>
 						<span>购物车</span>
 					</a>
-				</li>
+				</li> -->
 				{if:$this->user}
-				<li onclick="favorite_add_ajax({$id},this);">
+				<!-- <li onclick="favorite_add_ajax({$id},this);">
 					<i class="fa fa-star"></i>
 					<span>收藏</span>
-				</li>
+				</li> -->
 				{/if}
 			</ul>
 			<div class="btn_tab">
@@ -199,7 +199,7 @@
 				<a href="{url:/simple/arrival/goods_id/$id}" class="btn_tab_submit blue">商品已售完，到货通知</a>
 				{else:}
 				<span id="buyNowButton" class="btn_tab_submit pink">立即购买</span>
-				<span id="joinCarButton" class="btn_tab_submit blue">加入购物车</span>
+				<!-- <span id="joinCarButton" class="btn_tab_submit blue">加入购物车</span> -->
 				{/if}
 			</div>
 		</div>

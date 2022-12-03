@@ -1,0 +1,68 @@
+<div id="pageInfo" data-title="我的推荐" data-goback="{url:/ucenter/index}"></div>
+
+<style>
+    .time { float: right;}
+</style>
+
+<section id="address_list" class="address_list">
+	<ul>
+		{foreach:items=$this->team}
+		<li data-value="1" {if:$item['is_default']==1}class="default on"{/if}>
+			<header class="address_list_header">
+				<strong class="name">{$item['username']}</strong>
+				<span class="phone">{$item['mobile']}</span>
+                <span class="time">{$item['time']}</span>
+			</header>
+			<section class="address_list_section">
+				会员组：{$this->levelText[$item['level']]} {if:$item['times']>0} x {$item['times']} {/if}
+			</section>
+			<footer class="address_list_footer" style="display: table;">
+				<span class="address_btn"><a href="/ucenter/transfer/fid/{$item['id']}">转账</a></span>
+				<span class="address_btn"><a href="/site/pro_list/cat/1/tid/{$item['id']}">购买</a></span>
+                {if:$item['level']}
+				<span class="address_btn"><a href="/site/costpoint/tid/{$item['id']}">复购</a></span>
+                {/if}
+			</footer>
+		</li>
+		{/foreach}
+	</ul>
+
+    {if:!$items}
+    <section class="nothing">
+        <i class="fa fa-info-circle"></i>
+        <p>暂无记录</p>
+    </section>
+    {/if}
+</section>
+
+{if:$this->user['level'] > 1}
+<footer id="viewport_bottom">
+	<div class="btn_bottom">
+    <!-- <div class="address_edit_btn" id="address_edit_btn">编辑</div> -->
+    <a href="{url:/ucenter/add_user/fid/$this->user['user_id']}" class="btn_submit blue">添加</a>
+	</div>
+</footer>
+{/if}
+
+<script>
+$(function(){
+	// 内页隐藏页底导航
+	$(".footer_nav").hide();
+
+    // 打开关闭编辑模式
+	var btn = $("#address_edit_btn"),
+		list = $("#address_list").find('li');
+	btn.on('click',function(){
+		var t = $(this),
+			v = t.data('v');
+		if(v==1){
+			t.html("编辑").data('v', '0');
+			list.children('footer').hide();
+		}else{
+			t.html("取消").data('v', '1');
+			list.children('footer').css('display','table');
+		}
+	});
+});
+
+</script>

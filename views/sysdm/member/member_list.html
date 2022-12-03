@@ -18,11 +18,10 @@
 			<col />
 			<col width="100px" />
 			<col width="80px" />
-			<col width="50px" />
 			<col width="100px"/>
+			<col width="50px" />
 			<col width="90px" />
 			<col width="60px" />
-			<col width="50px" />
 			<col width="100px" />
 			<col width="100px" />
 			<col width="90px" />
@@ -41,10 +40,13 @@
                 <i class="fa fa-trash"></i>回收站
             </a>
             <a class="btn btn-default" onclick="balance_add()">
-                <i class="fa fa-yen"></i>预付款管理
+                如意金管理
+            </a>
+            <a class="btn btn-default" onclick="pool_edit()">
+               {echo:pool::getSystempool()}
             </a>
             <a class="btn btn-default" href="{url:/member/balance_report}" target="_blank">
-                <i class="fa fa-file-excel-o"></i>导出预存款
+                <i class="fa fa-file-excel-o"></i>导出如意金
             </a>
 
 			<form name="searchuser" action="{url:/}" method="get" class="pull-right form-inline">
@@ -66,11 +68,10 @@
 			<tr>
 				<th></th>
 				<th>用户名</th>
-				<th>会员等级</th>
+				<th>会员</th>
 				<th>姓名</th>
-				<th>性别</th>
-				<th>Email</th>
-				<th>预存款</th>
+				<th>邀请人</th>
+				<th>如意金</th>
 				<th>积分</th>
 				<th>状态</th>
 				<th>注册日期</th>
@@ -84,10 +85,9 @@
 			<tr>
 				<td><input name="check[]" type="checkbox" value="{$item['user_id']}" /></td>
 				<td title="{echo:htmlspecialchars($item['username'])}">{$item['username']}</td>
-				<td title="{$group[$item['group_id']]}">{$group[$item['group_id']]}</td>
+				<td title="{$group[$item['group_id']]}">{$this->levelText[$item['level']]}</td>
 				<td title="{echo:htmlspecialchars($item['true_name'])}">{$item['true_name']}</td>
-				<td>{if:$item['sex']=='1'}男{else:}女{/if}</td>
-				<td title="{echo:htmlspecialchars($item['email'])}">{$item['email']}</td>
+				<td>{$item['parentname']}</td>
 				<td title="{$item['balance']}">{$item['balance']}</td>
 				<td title="{$item['point']}">{$item['point']}</td>
 				<td title="{echo:Common::userStatusText($item['status'])}">{echo:Common::userStatusText($item['status'])}</td>
@@ -112,16 +112,16 @@ $(function(){
 	formObj.init({'search':'{$search}'});
 })
 
-//预付款管理入口
+//如意金管理入口
 function balance_add()
 {
-	if(!checkboxCheck('check[]','请选择要进行预付款操作的用户！'))
+	if(!checkboxCheck('check[]','请选择要进行如意金操作的用户！'))
 	{
 		return;
 	}
 
 	art.dialog.open("{url:/member/member_balance}",{
-	    title: '预付款管理',
+	    title: '如意金管理',
 	    ok:function(iframeWin, topWin)
 	    {
 	    	var formObject = iframeWin.document.forms['balanceForm'];
@@ -133,6 +133,40 @@ function balance_add()
 	    	//进行post提交
 	    	var postData = $('[name="member_list"]').serialize()+'&'+$(formObject).serialize();
 	    	$.post('{url:/member/member_recharge}',postData,function(json){
+	    		if(json.flag == 'success')
+	    		{
+	    			tips('操作成功');
+	    			window.location.reload();
+	    			return false;
+	    		}
+	    		else
+	    		{
+	    			alert(json.message);
+	    			return false;
+	    		}
+	    	},'json');
+	    	return false;
+		}
+	});
+}
+
+// 池管理
+function pool_edit()
+{
+
+	art.dialog.open("{url:/member/member_pool}",{
+	    title: '如意金管理',
+	    ok:function(iframeWin, topWin)
+	    {
+	    	var formObject = iframeWin.document.forms['poolForm'];
+	    	if(formObject.onsubmit() == false)
+	    	{
+	    		return false;
+	    	}
+
+	    	//进行post提交
+	    	var postData = $(formObject).serialize();
+	    	$.post('{url:/member/pool_edit}',postData,function(json){
 	    		if(json.flag == 'success')
 	    		{
 	    			tips('操作成功');
