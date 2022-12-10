@@ -12,7 +12,7 @@
 
 <section class="shop_home_list_2">
 	<ul>
-		{foreach:items = Api::run('getCommendNew',8)}
+		{foreach:items = Api::run('getCommendNew',88)}
 		<li>
 			<a href="{url:/site/products/id/$item['id']}">
 				<i class="photo"><img class="goods_photo" data-src="{url:/pic/thumb/img/$item[img]/w/200/h/200}" alt="{$item['name']}"></i>
