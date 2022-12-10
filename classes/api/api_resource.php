@@ -95,7 +95,7 @@ return array(
             'join' => 'left join goods as go on co.goods_id = go.id',
             'where' => 'co.commend_id = 1 and go.is_del = 0 AND go.id is not null',
             'fields' => 'go.img,go.sell_price,go.name,go.id,go.market_price',
-            'limit'=>'10',
+            //'limit'=>'10',
             'order'=>'sort asc'
         )
     ),
