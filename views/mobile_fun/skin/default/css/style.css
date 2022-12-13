@@ -14,6 +14,8 @@ input, textarea, select, address, caption, cite, code, dfn, em, i, b, strong, sm
 
 article, aside, footer, header, hgroup, nav, section, figure, figcaption { display: block; }
 
+figcaption { margin: 0;}
+
 code, kbd, pre, samp, tt { font-family: Consolas,"Courier New", Courier, monospace; }
 
 address, cite, dfn, em, var, i { font-style: normal; }
@@ -221,7 +223,7 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
 
 .btn_fa { background: #fafafa; color: #555; }
 
-.article_detail { line-height: 1.8; margin: 0.16rem; }
+.article_detail { line-height: 1.8; }
 .article_detail h1, .article_detail h2, .article_detail h3, .article_detail h4, .article_detail h5, .article_detail h6 { color: #FF8225; margin: 0.05rem 0; }
 .article_detail h1 small, .article_detail h2 small, .article_detail h3 small, .article_detail h4 small, .article_detail h5 small, .article_detail h6 small { color: #222; padding: 0 0.05rem; }
 .article_detail img { box-shadow: 0.02rem 0.02rem 0.05rem rgba(85, 85, 85, 0.2); display: block; max-width: 100%; margin: 0.05rem auto; }
@@ -527,8 +529,8 @@ textarea.valid-text, input.valid-text { box-shadow: 0 0 0 1px #06AC87; border: n
 .goods_foucs .focus span { display: inline-block; width: 0.08rem; height: 0.08rem; margin-right: 0.08rem; border-radius: 50%; background: #ccc; line-height: 100%; box-shadow: 0 0 0.01rem 0.01rem #fff; }
 .goods_foucs .focus span.current { background: #F85D92; }
 
-.good_info { padding: 0.16rem; background: #fff; }
-.good_info .good_info_title { padding-bottom: 0.08rem; line-height: 1.6; }
+.good_info { padding: 0.16rem 0; background: #fff; }
+.good_info .good_info_title { padding: 0 0.16rem 0.08rem; line-height: 1.6; }
 .good_info .good_info_title h1 { padding-bottom: 0.08rem; color: #222; border-bottom: 1px solid #ededed; }
 .good_info .good_info_title p { padding: 0.08rem 0 0.08rem 0.16rem; display: block; position: relative; }
 .good_info .good_info_title p:before { width: 0.02rem; height: 0.16rem; background: #F85D92; left: 0.03rem; top: 0.1rem; }
@@ -536,6 +538,10 @@ textarea.valid-text, input.valid-text { box-shadow: 0 0 0 1px #06AC87; border: n
 .good_info .good_info_title .price { display: inline-block; color: #F85D92; }
 .good_info .good_info_title .delprice { display: inline-block; height: 0.3rem; line-height: 0.3rem; text-indent: 0.2rem; text-decoration: line-through; color: #999; }
 .good_info .good_info_title .time { padding: 0.025rem 0.05rem; border: 1px dotted rgba(248, 93, 146, 0.2); color: #F85D92; background: rgba(248, 93, 146, 0.1); line-height: 1; }
+
+.good_info .goods_tip { padding: 0 0.16rem ; }
+.good_info .good_type { padding: 0 0.16rem ; }
+
 
 .goods_tip p { border-bottom: 1px solid #ededed; color: #999; line-height: 2; padding: 0.08rem 0; }
 
