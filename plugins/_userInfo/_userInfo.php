@@ -165,6 +165,8 @@ class _userInfo extends pluginBase
 
     	$fid = IReq::get('fid','post');
 
+    	$parentId = IReq::get('parentId','post');
+
 		if ($fid && $uid = IWeb::$app->getController()->user['user_id']) {
 			ISafe::set('reg_'.$uid, $fid);
 		}
@@ -272,6 +274,18 @@ class _userInfo extends pluginBase
 			}
 
 			$userArray['fid'] = $fid;
+		}
+
+		// 二维码注册
+		if ($parentId) {
+			$userObj = new IModel('user');
+			$userRow = $userObj->getObj('id = '.$parentId);
+			if(!$userRow)
+			{
+				return "邀请人不存在";
+			}
+
+			$userArray['fid'] = $parentId;
 		}
 
 		$userObj->setData($userArray);

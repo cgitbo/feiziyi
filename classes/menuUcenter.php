@@ -13,6 +13,7 @@ class menuUcenter
 	public static $ico = array(
 		"我的订单"   => "fa fa-shopping-bag",
 		"我的推荐"   => "fa fa-id-badge",
+		"我的二维码"   => "fa fa-qrcode",
 		"排行榜"     => "fa fa-trophy",
 		"我的积分"   => "fa fa-ticket",
 		// "我的优惠券" => "fa fa-tags",
@@ -35,6 +36,7 @@ class menuUcenter
 	public static $menu = array(
 		"交易记录" => array(
 			"/ucenter/order" => "我的订单",
+			"/ucenter/qr" => "我的二维码",
 			"/ucenter/team" => "我的推荐",
 			"/ucenter/top" => "排行榜",
 			"/ucenter/integral" => "我的积分",

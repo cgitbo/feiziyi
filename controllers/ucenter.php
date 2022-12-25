@@ -1308,4 +1308,31 @@ class Ucenter extends IController implements userAuthorization
         }
         $this->redirect('fix');
     }
+
+
+	// 
+	function qr()
+	{
+		$user_id = $this->user['user_id'];
+
+		$dir = 'upload/qrcode/';
+
+		$fileName = $user_id .  '_qrcode.png';
+		$fileUrl = $dir . $fileName;
+
+		if (file_exists($fileUrl)) {
+			$this->url = $fileUrl;
+			return $this->redirect('qr');
+		}
+		// 生成二维码图片
+		$siteConfigObj = new Config("site_config");
+		$url  = $siteConfigObj->url;
+		$data = $url . '/simple/reg?parentId=' . $user_id;
+		$size = 12;
+		QRcode::png($data, $fileUrl, QR_ECLEVEL_M, $size);
+
+		$this->url = $fileUrl;
+
+		$this->redirect('qr');
+	}
 }

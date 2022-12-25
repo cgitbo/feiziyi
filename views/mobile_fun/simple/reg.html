@@ -3,6 +3,7 @@
 	<div class="form">
 		<form action='{url:/simple/reg_act}' method='post'>
 			<input type="hidden" name='callback' value="{$callback}" />
+			<input type="hidden" name='parentId' value="{$_GET['parentId']}" />
 			<ul>
 				
 				{if:$this->_siteConfig->reg_option == 1}
