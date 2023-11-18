@@ -3,7 +3,7 @@
 class pool
 {
     //错误信息
-    private $error  = '';
+    public $error  = '';
 
     /**
      * @brief 池操作的构造函数
