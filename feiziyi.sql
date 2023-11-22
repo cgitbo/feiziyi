@@ -49636,6 +49636,7 @@ CREATE TABLE `pre_user` (
   `head_ico` varchar(255) DEFAULT NULL COMMENT '头像',
   `level` int DEFAULT NULL,
   `fid` int DEFAULT NULL,
+  `times` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 CREATE TABLE `pre_system` (
