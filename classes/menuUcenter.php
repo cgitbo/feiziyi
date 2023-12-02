@@ -15,7 +15,7 @@ class menuUcenter
 		"我的推荐"   => "fa fa-id-badge",
 		"我的二维码"   => "fa fa-qrcode",
 		"排行榜"     => "fa fa-trophy",
-		"我的积分"   => "fa fa-ticket",
+		"我的硒元素"   => "fa fa-ticket",
 		// "我的优惠券" => "fa fa-tags",
 		// "售后服务"   => "fa fa-reply",
 		"站点建议"   => "fa fa-file",
@@ -23,7 +23,7 @@ class menuUcenter
 		// "商品评价"   => "fa fa-comments",
 		// "短信息"     => "fa fa-bell",
 		// "收藏夹"     => "fa fa-heart",
-		"如意金"   => "fa fa-money",
+		"硒金"   => "fa fa-money",
 		"转账"     => "fa fa-ticket",
 		"在线充值"   => "fa fa-sign-in",
 		"地址管理"   => "fa fa-map-marker",
@@ -39,7 +39,7 @@ class menuUcenter
 			"/ucenter/qr" => "我的二维码",
 			"/ucenter/team" => "我的推荐",
 			"/ucenter/top" => "排行榜",
-			"/ucenter/integral" => "我的积分",
+			"/ucenter/integral" => "我的硒元素",
 			// "/ucenter/redpacket" => "我的优惠券",
 		),
 
@@ -56,7 +56,7 @@ class menuUcenter
 		),
 
 		"账户资金" => array(
-			"/ucenter/account_log" => "如意金",
+			"/ucenter/account_log" => "硒金",
 			"/ucenter/transfer" => "转账",
 			"/ucenter/online_recharge" => "在线充值",
 		),

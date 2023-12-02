@@ -21,8 +21,8 @@
             <option value="username">用户名</option>
             <option value="group_id">用户组</option>
             <option value="mobile">用户手机号</option>
-            <option value="point">积分区间</option>
-            <option value="balance">如意金区间</option>
+            <option value="point">硒元素区间</option>
+            <option value="balance">硒金区间</option>
         </select>
         <span id="conditionBox" style="margin-left:20px;"></span>
     </div>
@@ -71,15 +71,15 @@ function changeCondition(obj)
 
         case "point":
         {
-            templateHtml = "<input type='text' class='form-control' name='search[point_min]' placeholder='积分最小值' pattern='int' /> —— ";
-            templateHtml+= "<input type='text' class='form-control' name='search[point_max]' placeholder='积分最大值' pattern='int' />";
+            templateHtml = "<input type='text' class='form-control' name='search[point_min]' placeholder='硒元素最小值' pattern='int' /> —— ";
+            templateHtml+= "<input type='text' class='form-control' name='search[point_max]' placeholder='硒元素最大值' pattern='int' />";
         }
         break;
 
         case "balance":
         {
-            templateHtml = "<input type='text' class='form-control' name='search[balance_min]' placeholder='如意金最小值' pattern='int' /> —— ";
-            templateHtml+= "<input type='text' class='form-control' name='search[balance_max]' placeholder='如意金最大值' pattern='int' />";
+            templateHtml = "<input type='text' class='form-control' name='search[balance_min]' placeholder='硒金最小值' pattern='int' /> —— ";
+            templateHtml+= "<input type='text' class='form-control' name='search[balance_max]' placeholder='硒金最大值' pattern='int' />";
         }
         break;
 

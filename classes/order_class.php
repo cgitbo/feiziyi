@@ -186,11 +186,11 @@ class Order_Class
 			    	//(3)增加经验值
 			    	plugin::trigger('expUpdate',$user_id,$orderRow['exp']);
 
-					//(4)增加积分
+					//(4)增加硒元素
 					$pointConfig = array(
 						'user_id' => $user_id,
 						'point'   => $orderRow['point'],
-						'log'     => '成功购买了订单号：'.$orderRow['order_no'].'中的商品,奖励积分'.$orderRow['point'],
+						'log'     => '成功购买了订单号：'.$orderRow['order_no'].'中的商品,奖励硒元素'.$orderRow['point'],
 					);
 					$pointObj = new Point();
 					$pointObj->update($pointConfig);
@@ -1500,7 +1500,7 @@ class Order_Class
 	 * @param int    $refundId 退款单ID
 	 * @param int    $authorId 操作人ID
 	 * @param string $type admin:管理员;seller:商家
-	 * @param int    $way 退款方式， balance:退款如意金; other:其他方式退款; origin,原路退回
+	 * @param int    $way 退款方式， balance:退款硒金; other:其他方式退款; origin,原路退回
 	 * @return boolean
 	 */
 	public static function refund($refundId,$authorId,$type = 'admin',$way = 'balance')
@@ -1618,7 +1618,7 @@ class Order_Class
 			return "退款金额不能大于实际用户支付的订单金额";
 		}
 
-		//如果是商家自己处理的货到付款订单必须用其他方式退款,防止商家和买家刷如意金
+		//如果是商家自己处理的货到付款订单必须用其他方式退款,防止商家和买家刷硒金
 		if($orderRow['pay_type'] == 0 && $type == "seller")
 		{
 			$way = 'other';
@@ -1628,20 +1628,20 @@ class Order_Class
 		$wayResult = false;
 		switch($way)
 		{
-			//用户如意金
+			//用户硒金
 			case "balance":
 			{
 				//获取用户信息
 				$memberObj = $memberDB->getObj('user_id = '.$user_id,'user_id');
 				if(!$memberObj)
 				{
-					return "退款到如意金的用户不存在";
+					return "退款到硒金的用户不存在";
 				}
-				//用户如意金进行的操作记入account_log表
+				//用户硒金进行的操作记入account_log表
 				$log = new AccountLog();
 				$config = array(
 					'user_id'  => $user_id,
-					'event'    => 'drawback', //withdraw:提现,pay:如意金支付,recharge:充值,drawback:退款到如意金
+					'event'    => 'drawback', //withdraw:提现,pay:硒金支付,recharge:充值,drawback:退款到硒金
 					'num'      => $amount, //整形或者浮点，正为增加，负为减少
 					'order_no' => $order_no // drawback类型的log需要这个值
 				);
@@ -1714,7 +1714,7 @@ class Order_Class
 			$orderGoodsDB->setData(['is_send' => $is_send, 'refunds_nums' => $refundsItemNum]);
 			$orderGoodsDB->update('id = '.$val['id']);
 
-			//退款积分,经验
+			//退款硒元素,经验
 			$goodsRow = $goodsDB->getObj('id = '.$val['goods_id']);
 			if($goodsRow)
 			{
@@ -1727,7 +1727,7 @@ class Order_Class
 		 * 当订单为全部退款的状态且未手动输入退款金额(需要系统自动计算退款金额)的时候
 		 * 退款金额 = 订单支付总金额 + 运费(是否发货) - 此订单之前已经退款金额
 		 *
-		 * 进行用户的如意金增加操作,订单中的积分,经验的减少操作
+		 * 进行用户的硒金增加操作,订单中的硒元素,经验的减少操作
 		 */
 		if($orderStatus == 6)
 		{
@@ -1764,11 +1764,11 @@ class Order_Class
 			//更新用户的经验值
 			plugin::trigger('expUpdate',$user_id,-$reduceExp);
 
-			//积分记录日志
+			//硒元素记录日志
 			$pointConfig = array(
 				'user_id' => $user_id,
 				'point'   => '-'.$reducePoint,
-				'log'     => '退款订单号：'.$orderRow['order_no'].'中的商品,减掉积分 -'.$reducePoint,
+				'log'     => '退款订单号：'.$orderRow['order_no'].'中的商品,减掉硒元素 -'.$reducePoint,
 			);
 			$pointObj = new Point();
 			$pointObj->update($pointConfig);
@@ -1901,7 +1901,7 @@ class Order_Class
 	 */
 	public static function refundWay($code)
 	{
-		$result = array('balance' => '如意金退款','other' => '其他方式','origin' => '原路退款');
+		$result = array('balance' => '硒金退款','other' => '其他方式','origin' => '原路退款');
 		return isset($result[$code]) ? $result[$code] : "未知";
 	}
 

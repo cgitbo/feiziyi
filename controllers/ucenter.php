@@ -590,7 +590,7 @@ class Ucenter extends IController implements userAuthorization
     }
 
 
-    //[账户如意金] 转账[单页]
+    //[账户硒金] 转账[单页]
     function transfer()
     {
     	$user_id   = $this->user['user_id'];
@@ -608,7 +608,7 @@ class Ucenter extends IController implements userAuthorization
     	$this->redirect('transfer');
     }
 
-	//[账户如意金] 转账动作
+	//[账户硒金] 转账动作
     function transfer_act()
     {
     	$user_id = $this->user['user_id'];
@@ -639,7 +639,7 @@ class Ucenter extends IController implements userAuthorization
 
 		else if($amount > $memberRow['balance'])
 		{
-			$message = '转账的金额不能大于您的帐户如意金';
+			$message = '转账的金额不能大于您的帐户硒金';
 		}
 		
 		else {
@@ -736,7 +736,7 @@ class Ucenter extends IController implements userAuthorization
 		$this->redirect('add_user');
 	}
 
-    //[账户如意金] 展示[单页]
+    //[账户硒金] 展示[单页]
     function withdraw()
     {
     	$user_id   = $this->user['user_id'];
@@ -747,7 +747,7 @@ class Ucenter extends IController implements userAuthorization
     	$this->redirect('withdraw');
     }
 
-	//[账户如意金] 提现动作
+	//[账户硒金] 提现动作
     function withdraw_act()
     {
     	$user_id = $this->user['user_id'];
@@ -776,7 +776,7 @@ class Ucenter extends IController implements userAuthorization
 		}
 		else if($amount > $memberRow['balance'])
 		{
-			$message = '提现的金额不能大于您的帐户如意金';
+			$message = '提现的金额不能大于您的帐户硒金';
 		}
 		else if($withdrawDB->getObj('user_id = '.$this->user['user_id'].' and status in (0,1)'))
 		{
@@ -803,7 +803,7 @@ class Ucenter extends IController implements userAuthorization
 		}
     }
 
-    //[账户如意金] 提现详情
+    //[账户硒金] 提现详情
     function withdraw_detail()
     {
     	$user_id = $this->user['user_id'];
@@ -827,7 +827,7 @@ class Ucenter extends IController implements userAuthorization
     	$this->redirect('withdraw');
     }
 
-    //[如意金交易记录]
+    //[硒金交易记录]
     function account_log()
     {
     	$user_id   = $this->user['user_id'];
@@ -915,7 +915,7 @@ class Ucenter extends IController implements userAuthorization
 		}
     }
 
-    //[我的积分] 单页展示
+    //[我的硒元素] 单页展示
     function integral()
     {
     	$memberObj       = new IModel('member');
@@ -923,7 +923,7 @@ class Ucenter extends IController implements userAuthorization
     	$this->redirect('integral',false);
     }
 
-    //[我的积分]积分兑换优惠券 动作
+    //[我的硒元素]硒元素兑换优惠券 动作
     function trade_ticket()
     {
     	$ticketId  = IFilter::act( IReq::get('ticket_id'),'int' );
@@ -943,7 +943,7 @@ class Ucenter extends IController implements userAuthorization
 					$pointConfig = array(
 						'user_id' => $this->user['user_id'],
 						'point'   => '-'.$ticketRow['point'],
-						'log'     => '积分兑换优惠券，扣除了 -'.$ticketRow['point'].'积分',
+						'log'     => '硒元素兑换优惠券，扣除了 -'.$ticketRow['point'].'硒元素',
 					);
 					$pointObj = new Point;
 					$pointObj->update($pointConfig);
@@ -986,7 +986,7 @@ class Ucenter extends IController implements userAuthorization
     }
 
     /**
-     * 如意金付款
+     * 硒金付款
      * T:支付失败;
      * F:支付成功;
      */
@@ -1005,7 +1005,7 @@ class Ucenter extends IController implements userAuthorization
 		$paymentRow = $paymentDB->getObj('class_name = "balance" ');
 		if(!$paymentRow)
 		{
-			IError::show(403,'如意金支付方式不存在');
+			IError::show(403,'硒金支付方式不存在');
 		}
 
 		$paymentInstance = Payment::createPaymentInstance($paymentRow['id']);
@@ -1026,7 +1026,7 @@ class Ucenter extends IController implements userAuthorization
     	if($memberRow['balance'] < $return['total_fee'])
     	{
     	    $recharge = $return['total_fee'] - $memberRow['balance'];
-    	    $this->redirect('/ucenter/online_recharge/_msg/如意金不足请充值 ￥'.$recharge);
+    	    $this->redirect('/ucenter/online_recharge/_msg/硒金不足请充值 ￥'.$recharge);
     	    return;
     	}
 
@@ -1038,7 +1038,7 @@ class Ucenter extends IController implements userAuthorization
 			IError::show(403,'订单号【'.$return['order_no'].'】已经被处理过，请查看订单状态');
 		}
 
-		//扣除如意金并且记录日志
+		//扣除硒金并且记录日志
 		$logObj = new AccountLog();
 		$config = array(
 			'user_id'  => $user_id,
@@ -1050,7 +1050,7 @@ class Ucenter extends IController implements userAuthorization
 		if(!$is_success)
 		{
 			$orderObj->rollback();
-			IError::show(403,$logObj->error ? $logObj->error : '用户如意金更新失败');
+			IError::show(403,$logObj->error ? $logObj->error : '用户硒金更新失败');
 		}
 
 		//订单批量结算缓存机制

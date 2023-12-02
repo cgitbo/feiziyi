@@ -1,4 +1,4 @@
-<div id="pageInfo" data-title="积分兑换"></div>
+<div id="pageInfo" data-title="硒元素兑换"></div>
 {set:$costpointDB = Api::run('getCostPointList');$costpointData = $costpointDB->find();}
 {if:$costpointData}
 <section class="goods_list">
@@ -9,7 +9,7 @@
 				<i class="photo"><img class="goods_photo" data-src="{url:/pic/thumb/img/$item[img]/w/200/h/200}" alt="{$item['name']}"></i>
 				<h3 class="name"><strong>{$item['name']}</strong></h3>
 				<del class="old_price">￥{$item['sell_price']}</del>
-				<em class="price">{$item['point']}积分</em>
+				<em class="price">{$item['point']}硒元素</em>
 			</a>
 		</li>
 		{/foreach}

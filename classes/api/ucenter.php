@@ -9,7 +9,7 @@
  */
 class APIUcenter
 {
-    ///用户中心-账户如意金
+    ///用户中心-账户硒金
     public function getUcenterAccoutLog($userid = '')
     {
         $userid = $userid ? IFilter::act($userid,'int') : IWeb::$app->getController()->user['user_id'];
@@ -122,7 +122,7 @@ class APIUcenter
         $info = $query->find();
         return $info[0];
     }
-    //用户中心-积分列表
+    //用户中心-硒元素列表
     public function getUcenterPointLog($userid = '')
     {
         $userid     = $userid ? IFilter::act($userid,'int') : IWeb::$app->getController()->user['user_id'];

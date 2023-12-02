@@ -1,4 +1,4 @@
-<div id="pageInfo" data-title="我的积分"></div>
+<div id="pageInfo" data-title="我的硒元素"></div>
 
 <section class="integral_list">
     {set:$queryPointLog = Api::run('getUcenterPointLog')}
@@ -6,7 +6,7 @@
     <dl>
         <dt>
             <time>{echo:substr($item['datetime'],0,10)}</time>
-            <strong>积分：</strong><em>{$item['value']}分</em>
+            <strong>硒元素：</strong><em>{$item['value']}分</em>
         </dt>
         <dd>
             <strong>说明：</strong>{$item['intro']}

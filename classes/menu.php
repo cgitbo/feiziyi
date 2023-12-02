@@ -92,7 +92,7 @@ class Menu
         		'/market/pro_rule_list' => '促销活动列表'
         	),
         	'营销活动' => array(
-                '/market/cost_point_list' => '积分兑换',
+                '/market/cost_point_list' => '硒元素兑换',
 				'/market/pro_speed_list' => '限时抢购',
 				'/market/assemble_list' => '拼团',
         		'/market/regiment_list' => '团购',

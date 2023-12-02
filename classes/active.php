@@ -9,7 +9,7 @@
  */
 class Active
 {
-	//活动的类型,groupon(团购),time(限时抢购),costpoint(积分兑换商品),assemble(拼团)
+	//活动的类型,groupon(团购),time(限时抢购),costpoint(硒元素兑换商品),assemble(拼团)
 	private $promo;
 
 	//参加活动的用户ID
@@ -33,15 +33,15 @@ class Active
 	//活动价格
 	public $activePrice;
 
-    //所需积分
+    //所需硒元素
     public $spendPoint = 0;
 
 	//活动类型和名称的对应关系
-	public static $typeToNameMapping = array('assemble' => '拼团','groupon' => '团购','time' => '限时抢购','costpoint' => '积分兑换');
+	public static $typeToNameMapping = array('assemble' => '拼团','groupon' => '团购','time' => '限时抢购','costpoint' => '硒元素兑换');
 
 	/**
 	 * @brief 构造函数创建活动
-	 * @param $promo string 活动的类型,groupon(团购),time(限时抢购),costpoint(积分兑换),assemble(拼团)
+	 * @param $promo string 活动的类型,groupon(团购),time(限时抢购),costpoint(硒元素兑换),assemble(拼团)
 	 * @param $activeId int 活动的ID编号
 	 * @param $user_id int 用户的ID编号
 	 * @param $id  int 根据$type的不同而表示：商品id,货品id
@@ -226,12 +226,12 @@ class Active
 			}
 			break;
 
-            //积分兑换
+            //硒元素兑换
             case "costpoint":
             {
                 if(!$this->user_id)
                 {
-                    return "参加积分兑换请您先登录";
+                    return "参加硒元素兑换请您先登录";
                 }
 
                 $promotionRow = Api::run('getCostPointRowById',array("id" => $this->active_id));
@@ -239,7 +239,7 @@ class Active
                 {
                     if($promotionRow['goods_id'] != $goodsData['goods_id'])
                     {
-                        return "该商品没有参与积分兑换活动";
+                        return "该商品没有参与硒元素兑换活动";
                     }
 
                     $memberDB  = new IModel('member');
@@ -251,7 +251,7 @@ class Active
 
                     if($memberRow['point'] < $promotionRow['point'] * $this->buy_num)
                     {
-                        return "用户积分不足";
+                        return "用户硒元素不足";
                     }
 
                     if($promotionRow['user_group'] == '' || (isset($memberRow['group_id']) && stripos(','.$promotionRow['user_group'].',',','.$memberRow['group_id'].',')!==false))
@@ -266,7 +266,7 @@ class Active
                 }
                 else
                 {
-                    return "不存在此积分兑换活动";
+                    return "不存在此硒元素兑换活动";
                 }
                 return true;
             }
@@ -428,7 +428,7 @@ class Active
 			}
 			break;
 
-            //积分兑换
+            //硒元素兑换
             case "costpoint":
             {
                 $tableModel = new IModel('order');
@@ -439,7 +439,7 @@ class Active
                     $pointConfig = array(
                         'user_id' => $user_id,
                         'point'   => -$orderRow['spend_point'],
-                        'log'     => '成功购买订单号：'.$orderRow['order_no'].'中的商品,消耗积分'.$orderRow['spend_point'],
+                        'log'     => '成功购买订单号：'.$orderRow['order_no'].'中的商品,消耗硒元素'.$orderRow['spend_point'],
                     );
                     $pointObj = new Point();
                     $pointObj->update($pointConfig);
@@ -513,7 +513,7 @@ class Active
                 {
                     return $data;
                 }
-                return "积分兑换活动不存在";
+                return "硒元素兑换活动不存在";
             }
             break;
 
@@ -604,7 +604,7 @@ class Active
 			}
 			break;
 
-            //积分兑换
+            //硒元素兑换
             case "costpoint":
             {
                 $tableModel = new IModel('order');
@@ -614,8 +614,8 @@ class Active
                     $user_id = $orderRow['user_id'];
                     $pointConfig = array(
                         'user_id' => $user_id,
-                        'point'   => $orderRow['spend_point'],//需要返还的积分
-                        'log'     => '退款订单号：'.$orderRow['order_no'].'中的商品,退还积分'.$orderRow['spend_point'],
+                        'point'   => $orderRow['spend_point'],//需要返还的硒元素
+                        'log'     => '退款订单号：'.$orderRow['order_no'].'中的商品,退还硒元素'.$orderRow['spend_point'],
                     );
                     $pointObj = new Point();
                     $pointObj->update($pointConfig);
@@ -740,7 +740,7 @@ class Active
 	}
 
     /**
-     * @brief 积分兑换活动的状态
+     * @brief 硒元素兑换活动的状态
      * @param array $row 表数据
      * @param string
      */

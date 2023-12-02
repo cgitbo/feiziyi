@@ -530,7 +530,7 @@ return array(
         )
     ),
 
-    //用户中心-账户如意金
+    //用户中心-账户硒金
     'getUcenterAccoutLog' => array(
         'file' => 'ucenter.php','class' => 'APIUcenter'
     ),
@@ -595,7 +595,7 @@ return array(
         )
     ),
 
-    //用户中心-积分列表
+    //用户中心-硒元素列表
     'getUcenterPointLog' => array(
         'file' => 'ucenter.php','class' => 'APIUcenter'
     ),
@@ -897,7 +897,7 @@ return array(
         )
     ),
 
-    //积分商品列表
+    //硒元素商品列表
     'getCostPointList' => array(
         'query' => array(
             'name'  => 'cost_point as c',
@@ -909,7 +909,7 @@ return array(
         )
     ),
 
-    //积分商品
+    //硒元素商品
     'getCostPointRowById'=> array(
         'query' => array(
             'name'  => 'cost_point',
@@ -919,7 +919,7 @@ return array(
         )
     ),
 
-    //热卖积分商品列表
+    //热卖硒元素商品列表
     'getCostPointHot' => array(
         'query' => array(
             'name'   => 'cost_point as c',
@@ -1059,7 +1059,7 @@ return array(
         )
     ),
 
-    //获取积分兑换活动
+    //获取硒元素兑换活动
     'getListByCostPoint'=>array(
         'query'=>array(
             'name'  => 'cost_point as co',

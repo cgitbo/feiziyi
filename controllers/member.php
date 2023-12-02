@@ -158,7 +158,7 @@ class Member extends IController implements adminAuthorization
 
 			$member_info = $memberDB->getObj('user_id='.$user_id);
 
-			//修改积分记录日志
+			//修改硒元素记录日志
 			if($point != $member_info['point'])
 			{
 				$ctrlType = $point > $member_info['point'] ? '增加' : '减少';
@@ -168,7 +168,7 @@ class Member extends IController implements adminAuthorization
 				$pointConfig = array(
 					'user_id' => $user_id,
 					'point'   => $diffPoint,
-					'log'     => '管理员'.$this->admin['admin_name'].'将积分'.$ctrlType.$diffPoint.'积分',
+					'log'     => '管理员'.$this->admin['admin_name'].'将硒元素'.$ctrlType.$diffPoint.'硒元素',
 				);
 				$pointObj->update($pointConfig);
 			}
@@ -215,7 +215,7 @@ class Member extends IController implements adminAuthorization
 	}
 
 	/**
-	 * 用户如意金管理页面
+	 * 用户硒金管理页面
 	 */
 	function member_balance()
 	{
@@ -243,7 +243,7 @@ class Member extends IController implements adminAuthorization
 		}
 		$this->member_list();
 	}
-	//批量用户如意金操作
+	//批量用户硒金操作
     function member_recharge()
     {
     	$id       = IFilter::act(IReq::get('check'),'int');
@@ -264,7 +264,7 @@ class Member extends IController implements adminAuthorization
 
 		foreach($memberData as $value)
 		{
-			//用户如意金进行的操作记入account_log表
+			//用户硒金进行的操作记入account_log表
 			$log = new AccountLog();
 			$config=array
 			(
@@ -546,7 +546,7 @@ class Member extends IController implements adminAuthorization
 			if($memberRow['balance'] < $withdrawRow['amount'])
 			{
 				$failNum++;
-				$error .= $withdrawRow['name'].'如意金余额不足';
+				$error .= $withdrawRow['name'].'硒金余额不足';
 				continue;
 			}
 
@@ -580,7 +580,7 @@ class Member extends IController implements adminAuthorization
 							'openid'           => $openid,
 							're_user_name'     => $withdrawRow['name'],
 							'amount'           => $withdrawRow['amount'],
-							'desc'             => IWeb::$app->getController()->_siteConfig->name.'如意金余额提现',
+							'desc'             => IWeb::$app->getController()->_siteConfig->name.'硒金余额提现',
 							'partner_trade_no' => $billNo,
 							'payment_id'       => $payment_id,
 						];
@@ -615,7 +615,7 @@ class Member extends IController implements adminAuthorization
 
 			if($payCheck == true)
 			{
-				//用户如意金进行的操作记入account_log表
+				//用户硒金进行的操作记入account_log表
 				$log    = new AccountLog();
 				$config = [
 					'user_id'  => $withdrawRow['user_id'],
@@ -896,7 +896,7 @@ class Member extends IController implements adminAuthorization
 		plugin::trigger("updateSellerStatus",$id);
 	}
 
-	//导出如意金excel
+	//导出硒金excel
 	public function balance_report()
 	{
 		$memberQuery = new IQuery('member as m');

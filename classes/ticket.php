@@ -400,10 +400,10 @@ class ticket
 		$where     = 'user_id = '.$user_id;
 		$memberRow = $memberObj->getObj($where,'point,prop');
 
-		//积分判定
+		//硒元素判定
 		if($memberRow['point'] < $ticketRow['point'])
 		{
-			return '积分不足，无法兑换';
+			return '硒元素不足，无法兑换';
 		}
 
 		//免费优惠券拒绝重复领取

@@ -11,10 +11,10 @@
 /**
  * @class ProRule
  * @brief 促销活动规则奖励
-          奖励方式分为 (1)现金奖励,(2)赠品奖励,(3)如意金奖励
+          奖励方式分为 (1)现金奖励,(2)赠品奖励,(3)硒金奖励
           (1)现金奖励就是直接减少订单总额中的金钱数
           (2)赠品奖励就是订单支持成功后，系统自动发送的赠品
-          (3)如意金奖励就是直接充值到用户帐户如意金中
+          (3)硒金奖励就是直接充值到用户帐户硒金中
  */
 class ProRule
 {
@@ -33,7 +33,7 @@ class ProRule
 	//现金促销规则奖励方式 1减金额 2奖励折扣
 	private $cash_award_type = array(1,2);
 
-	//赠品促销规则奖励方式 3赠送积分 4赠送优惠券 5赠送赠品 6免运费 8赠送经验值
+	//赠品促销规则奖励方式 3赠送硒元素 4赠送优惠券 5赠送赠品 6免运费 8赠送经验值
 	private $gift_award_type = array(3,4,5,6,8);
 
 	//商家ID
@@ -149,7 +149,7 @@ class ProRule
 
 			case "3":
 			{
-				return '购物满￥'.$condition.' 增加'.$awardValue.'积分';
+				return '购物满￥'.$condition.' 增加'.$awardValue.'硒元素';
 			}
 			break;
 
@@ -189,7 +189,7 @@ class ProRule
 
 			case "10":
 		    {
-		        return '在线充值满￥'.$condition.' 赠送如意金￥'.$awardValue;
+		        return '在线充值满￥'.$condition.' 赠送硒金￥'.$awardValue;
 		    }
 		    break;
 
@@ -221,7 +221,7 @@ class ProRule
 
 	/**
 	 * @brief 根据商品金额获取所满足的$award_type类别促销规则信息
-	 * @param int $award_type 奖励类别 1减金额 2奖励折扣 3赠送积分 4赠送优惠券 5赠送赠品 6免运费 8赠送经验
+	 * @param int $award_type 奖励类别 1减金额 2奖励折扣 3赠送硒元素 4赠送优惠券 5赠送赠品 6免运费 8赠送经验
 	 * @return array 促销规则信息
 	 */
 	private function satisfyPromotion($award_type = null)
@@ -295,7 +295,7 @@ class ProRule
 			$award_value = $val['award_value'];
 			switch($award_type)
 			{
-				//积分
+				//硒元素
 				case "3":
 				{
 					$pointConfig = array(
@@ -414,7 +414,7 @@ class ProRule
 	}
 
 	/**
-	 * @brief 在线充值赠送如意金的活动内容
+	 * @brief 在线充值赠送硒金的活动内容
 	 * @param integer $money 充值金额
 	 */
 	public function payPromotion($money)
@@ -457,7 +457,7 @@ class ProRule
 	            {
 	                case '10':
                     {
-                        // 赠送如意金
+                        // 赠送硒金
                         $log = new AccountLog();
                         $note = $this->typeExplain($award_type, $val['condition'], $award_value);
                         $logConfig = array(

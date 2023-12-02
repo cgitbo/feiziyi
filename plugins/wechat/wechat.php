@@ -1758,7 +1758,7 @@ OEF;
                 "first"   => array("value" => "在线充值成功","color" => "#173177"),
                 "money"   => array("value" => $rechargeRow['account']),
                 "product" => array("value" => $rechargeRow['payment_name']),
-                "remark"  => array("value" => "请登录您的个人中心查看如意金"),
+                "remark"  => array("value" => "请登录您的个人中心查看硒金"),
             );
             $this->send($openid,$templateid,$data,"ucenter/account_log");
 		}

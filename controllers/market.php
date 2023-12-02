@@ -639,7 +639,7 @@ class Market extends IController implements adminAuthorization
 		}
 	}
 
-	//账户如意金记录
+	//账户硒金记录
 	function account_list()
 	{
 		$page   = IReq::get('page') ? intval(IReq::get('page')) : 1;
@@ -1005,7 +1005,7 @@ class Market extends IController implements adminAuthorization
 		}
 	}
 
-    //[积分兑换]添加,修改 表单显示
+    //[硒元素兑换]添加,修改 表单显示
     function cost_point_edit()
     {
         $id = IFilter::act(IReq::get('id'),'int');
@@ -1019,7 +1019,7 @@ class Market extends IController implements adminAuthorization
                 return;
             }
 
-            //积分兑换商品
+            //硒元素兑换商品
             $goodsObj = new IModel('goods');
             $goodsRow = $goodsObj->getObj('id = '.$costPointRow['goods_id'],'id,name,sell_price,img');
             if(!$goodsRow)
@@ -1038,7 +1038,7 @@ class Market extends IController implements adminAuthorization
         $this->redirect('cost_point_edit');
     }
 
-    //[积分兑换]添加,修改
+    //[硒元素兑换]添加,修改
     function cost_point_edit_act()
     {
         $id = IFilter::act(IReq::get('id','post'),'int');
@@ -1077,7 +1077,7 @@ class Market extends IController implements adminAuthorization
         $this->redirect('cost_point_list');
     }
 
-    //[积分兑换]删除
+    //[硒元素兑换]删除
     function cost_point_del()
     {
         $id = IFilter::act(IReq::get('id'));
@@ -1381,7 +1381,7 @@ class Market extends IController implements adminAuthorization
 		}
 	}
 
-	//账户如意金操作记录导出
+	//账户硒金操作记录导出
 	public function account_report()
 	{
 		$where  = Util::search(IReq::get('search'));

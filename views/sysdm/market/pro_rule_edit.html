@@ -78,7 +78,7 @@
 						<option value="5">新用户注册</option>
 						<option value="6">在线充值金额满足</option>
 					</select>
-					<p class="help-block">(1)消费金额满足条件，即可获得奖励；(2)新用户注册即可获得奖励；(3)在线充值金额满足条件，即可获得如意金奖励</p>
+					<p class="help-block">(1)消费金额满足条件，即可获得奖励；(2)新用户注册即可获得奖励；(3)在线充值金额满足条件，即可获得硒金奖励</p>
 				</td>
 			</tr>
 			<tr>
@@ -110,7 +110,7 @@
 <option value=''>请选择</option>
 <option value='1'>当购物车金额满 M 元时,优惠 N 元</option>
 <option value='2'>当购物车金额满 M 元时,优惠 N% </option>
-<option value='3'>当购物车金额满 M 元时,赠送 N 个积分</option>
+<option value='3'>当购物车金额满 M 元时,赠送 N 个硒元素</option>
 <option value='4'>当购物车金额满 M 元时,赠送一张面值 N 元的优惠券</option>
 <option value='6'>当购物车金额满 M 元时,免运费</option>
 <option value='8'>当购物车金额满 M 元时,赠送 N 经验值</option>
@@ -125,7 +125,7 @@
 <!--在线充值金额满足-->
 <script id="payType" type='text/html'>
 <option value=''>请选择</option>
-<option value='10'>当在线充值金额满 M 元时,赠送如意金 N 元</option>
+<option value='10'>当在线充值金额满 M 元时,赠送硒金 N 元</option>
 </script>
 
 
@@ -187,7 +187,7 @@ function change_gift(selectVal)
 
 		case "3":
 		{
-			html = "赠送积分：<input type='text' name='award_value' class='form-control w-auto' pattern='int' alt='请填写一个数字' /> <p class='help-block'>* 赠送的积分</p>";
+			html = "赠送硒元素：<input type='text' name='award_value' class='form-control w-auto' pattern='int' alt='请填写一个数字' /> <p class='help-block'>* 赠送的硒元素</p>";
 		}
 		break;
 
@@ -249,7 +249,7 @@ function change_gift(selectVal)
 
 		case "10":
 		{
-			html = "赠送如意金：<input type='text' name='award_value' class='form-control w-auto' pattern='float' alt='请填写一个金额数字' />元 <p class='help-block'>* 赠送的金额，直接充值到账户如意金中</p>";
+			html = "赠送硒金：<input type='text' name='award_value' class='form-control w-auto' pattern='float' alt='请填写一个金额数字' />元 <p class='help-block'>* 赠送的金额，直接充值到账户硒金中</p>";
 		}
 		break;
 	}

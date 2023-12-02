@@ -174,12 +174,12 @@ class CountSum
     	$this->count       = 0; //总数量
     	$this->promotion   = [];//促销活动规则文本
     	$this->proReduce   = 0; //促销活动规则优惠额
-    	$this->point       = 0; //增加积分
+    	$this->point       = 0; //增加硒元素
     	$this->exp         = 0; //增加经验
     	$this->freeFreight = [];//商家免运费,免运费的商家ID,自营ID为0
     	$this->tax         = 0; //商品税金
     	$this->seller      = [];//商家商品总额统计, 商家ID => 商品金额
-    	$this->spend_point = 0; //商品所需积分
+    	$this->spend_point = 0; //商品所需硒元素
     	$this->takeself    = [];//自提点
 
 		$user_id      = $this->user_id;
@@ -261,7 +261,7 @@ class CountSum
     			{
     			    $listDayPrice = goods_class::preorderPrice($ac_id,$ac_type,$listDay);
 
-                    //刷新积分
+                    //刷新硒元素
     			    $this->spend_point *= count($listDay);
 
     			    //活动价

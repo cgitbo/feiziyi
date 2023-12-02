@@ -8,7 +8,7 @@
 class KoubeiMarketingToolPointsUpdateRequest
 {
 	/** 
-	 * 更新卡积分
+	 * 更新卡硒元素
 	 **/
 	private $bizContent;
 

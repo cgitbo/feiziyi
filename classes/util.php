@@ -148,18 +148,18 @@ class Util
             $revInfo[] = "【用户手机号：".$info['mobile']."】";
         }
 
-        //积分区间
+        //硒元素区间
         if(isset($info['point_min']) && isset($info['point_max']) && $info['point_min'] && $info['point_max'])
         {
             $where[] = "m.point BETWEEN ".$info['point_min']." and ".$info['point_max'];
-            $revInfo[] = "【积分区间：".$info['point_min']."——".$info['point_max']."】";
+            $revInfo[] = "【硒元素区间：".$info['point_min']."——".$info['point_max']."】";
         }
 
-        //如意金区间
+        //硒金区间
         if(isset($info['balance_min']) && isset($info['balance_max']) && $info['balance_min'] && $info['balance_max'])
         {
             $where[] = "m.balance BETWEEN ".$info['balance_min']." and ".$info['balance_max'];
-            $revInfo[] = "【如意金区间：".$info['balance_min']."——".$info['balance_max']."】";
+            $revInfo[] = "【硒金区间：".$info['balance_min']."——".$info['balance_max']."】";
         }
 
         if($where)

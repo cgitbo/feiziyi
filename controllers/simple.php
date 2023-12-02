@@ -657,7 +657,7 @@ class Simple extends IController
 				//奖励性促销规则IDS
 				'prorule_ids'         => $goodsResult['giftIds'],
 
-                //所需要支付的积分
+                //所需要支付的硒元素
                 'spend_point'         => $goodsResult['spend_point'],
 
                 //商品类型

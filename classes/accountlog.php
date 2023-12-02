@@ -9,7 +9,7 @@
  */
 
 /**
- * 将对用户如意金进行的操作记入account_log表
+ * 将对用户硒金进行的操作记入account_log表
  *
  * $user_id = 用户id
  *
@@ -18,7 +18,7 @@
  *      'user_id'   => 用户ID
  *      'seller_id' => 商户ID
  *		'admin_id'  => 管理员ID
- *		'event'     => 操作类别 withdraw:提现,pay:如意金支付,recharge:充值,drawback:退款到如意金,commission_withdraw:佣金提现到如意金,recharge_award:充值奖励
+ *		'event'     => 操作类别 withdraw:提现,pay:硒金支付,recharge:充值,drawback:退款到硒金,commission_withdraw:佣金提现到硒金,recharge_award:充值奖励
  *		'note'      => 备注信息 如果不设置的话则根据event类型自动生成，如果设置了则不再对数据完整性进行检测，比如是否设置了管理员id、订单信息等
  *		'num'       => 金额     整形或者浮点，正为增加，负为减少
  * 		'order_no'  => 订单号   drawback类型的log需要这个值
@@ -43,11 +43,11 @@ class AccountLog
 	public  $error    = "";//错误信息
 
 	private $allow_event = array(
-		'recharge'=> 1,//充值到如意金
-		'withdraw'=> 2,//从如意金提现
-		'pay'     => 3,//从如意金支付
-		'drawback'=> 4,//退款到如意金
-		'commission_withdraw'=> 5,//佣金提现到如意金
+		'recharge'=> 1,//充值到硒金
+		'withdraw'=> 2,//从硒金提现
+		'pay'     => 3,//从硒金支付
+		'drawback'=> 4,//退款到硒金
+		'commission_withdraw'=> 5,//佣金提现到硒金
 	    'recharge_award'=> 6,//充值奖励
 
 	    'transfer'=> 10,//转出
@@ -57,7 +57,7 @@ class AccountLog
 	private static $event_text = array(
 		1 => "充值",
 		2 => "提现",
-		3 => "如意金支付",
+		3 => "硒金支付",
 		4 => "退款",
 		5 => "分销佣金",
 	    6 => "充值奖励",
@@ -73,7 +73,7 @@ class AccountLog
 	}
 
 	/**
-	 * 写入日志并且更新账户如意金
+	 * 写入日志并且更新账户硒金
 	 * @param array $config config数据类型
 	 * @return string|bool
 	 */
@@ -116,17 +116,17 @@ class AccountLog
 		$finnalAmount = $this->user['balance'] + $this->amount;
 		if($finnalAmount < 0)
 		{
-			$this->error = "用户如意金不足";
+			$this->error = "用户硒金不足";
 			return false;
 		}
 
-		//对用户如意金进行更新
+		//对用户硒金进行更新
 		$memberDB    = new IModel('member');
 		$memberDB->setData(array("balance" => $finnalAmount));
 		$isChBalance = $memberDB->update("user_id = ".$this->user['id']);
 		if(!$isChBalance)
 		{
-			$this->error = "如意金数据更新失败";
+			$this->error = "硒金数据更新失败";
 			return false;
 		}
 
@@ -258,7 +258,7 @@ class AccountLog
 			//支付
 			case 'pay':
 			{
-				$note .= "用户[{$this->user['username']}]使用如意金支付购买，订单[{$this->config['order_no']}]，金额：{$this->amount}";
+				$note .= "用户[{$this->user['username']}]使用硒金支付购买，订单[{$this->config['order_no']}]，金额：{$this->amount}";
 			}
 			break;
 
@@ -290,11 +290,11 @@ class AccountLog
 				{
 					$note .= "管理员[{$this->admin['admin_name']}]操作";
 				}
-				$note .= "订单[{$this->config['order_no']}]退款到用户[{$this->user['username']}]如意金，金额：{$this->amount}";
+				$note .= "订单[{$this->config['order_no']}]退款到用户[{$this->user['username']}]硒金，金额：{$this->amount}";
 			}
 			break;
 
-			//佣金提现到如意金
+			//佣金提现到硒金
 			case 'commission_withdraw':
 			{
 				if (is_null($this->admin))
@@ -339,7 +339,7 @@ class AccountLog
 		return strtr($templateString,$replaceData);
 	}
 
-    //[账户如意金] 提现状态判定
+    //[账户硒金] 提现状态判定
     public static function getWithdrawStatus($status)
     {
     	$data = array(

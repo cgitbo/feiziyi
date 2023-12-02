@@ -1169,7 +1169,7 @@ class goods_class
 			        break;
 			}
 		}
-		// 积分
+		// 硒元素
 		$point = isset($paramData['point']) ? IFilter::act($paramData['point'], 'int') : 0;
 		if (0 < $point)
 		{

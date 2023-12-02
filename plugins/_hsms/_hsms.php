@@ -556,7 +556,7 @@ class _hsms extends pluginBase
                 "在线充值成功",
                 "金额：".$rechargeRow['account'],
                 "充值方式：".$rechargeRow['payment_name'],
-                "请登录您的个人中心查看如意金",
+                "请登录您的个人中心查看硒金",
             ];
             Hsms::send($mobile,join(",",$data),0);
 		}

@@ -83,7 +83,7 @@ class pool
     // 信息显示
     static function levelText($level = '')
     {
-        $text = ['注册用户', 'VIP', '销售经理', '销售总监'];
+        $text = ['注册用户', 'VIP', '硒旺店主', '硒旺合作人'];
         return $level ? $text[$level] : $text;
     }
 
@@ -127,11 +127,11 @@ class pool
         $cid = $orderRow['tid'] ? $orderRow['tid'] : $orderRow['fid'];
         if (!$cid) return;
 
-        // 当前tid增加积分
+        // 当前tid增加硒元素
         $pointConfig = array(
             'user_id' => $cid,
             'point'   => $orderRow['point'],
-            'log'     => '成功购买了订单号：' . $orderRow['order_no'] . '中的商品,奖励积分' . $orderRow['point'],
+            'log'     => '成功购买了订单号：' . $orderRow['order_no'] . '中的商品,奖励硒元素' . $orderRow['point'],
         );
         $pointObj = new Point();
         $pointObj->update($pointConfig);

@@ -2,7 +2,7 @@
 /**
  * @copyright (c) 2011 [group]
  * @file pointlog.php
- * @brief 积分日志记录处理类
+ * @brief 硒元素日志记录处理类
  * @author chendeshan
  * @date 2011-6-15 14:58:39
  * @version 0.6
@@ -13,8 +13,8 @@ class Point
 	private $error  = '';
 
 	/**
-	 * @brief 积分操作的构造函数
-	 * @param array $config => array('user_id' => 用户ID , 'point' => 积分增减(正，负区分) , 'log' => 日志记录内容)
+	 * @brief 硒元素操作的构造函数
+	 * @param array $config => array('user_id' => 用户ID , 'point' => 硒元素增减(正，负区分) , 'log' => 日志记录内容)
 	 */
 	public function update($config)
 	{
@@ -24,11 +24,11 @@ class Point
 		}
 		else if(!isset($config['point']) || intval($config['point']) == 0)
 		{
-			$this->error = '积分格式不正确';
+			$this->error = '硒元素格式不正确';
 		}
 		else if(!isset($config['log']))
 		{
-			$this->error = '积分日志内容不正确';
+			$this->error = '硒元素日志内容不正确';
 		}
 		else
 		{
@@ -42,7 +42,7 @@ class Point
 			}
 			else
 			{
-				$this->error = '积分更新失败';
+				$this->error = '硒元素更新失败';
 			}
 		}
 
@@ -57,7 +57,7 @@ class Point
 
 	/**
 	 * @brief 日志记录
-	 * @param array $config => array('user_id' => 用户ID , 'point' => 积分增减(正，负区分) , 'log' => 日志记录内容)
+	 * @param array $config => array('user_id' => 用户ID , 'point' => 硒元素增减(正，负区分) , 'log' => 日志记录内容)
 	 */
 	private function writeLog($config)
 	{
@@ -74,9 +74,9 @@ class Point
 	}
 
 	/**
-	 * @brief 积分更新
+	 * @brief 硒元素更新
 	 * @param int $user_id 用户ID
-	 * @param int $point   积分数(正，负)
+	 * @param int $point   硒元素数(正，负)
 	 */
 	private function editPoint($user_id,$point)
 	{
